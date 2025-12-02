@@ -492,12 +492,8 @@ function Carte() {
   // Désactiver le scroll sur la page
   useEffect(() => {
     document.body.style.overflow = 'hidden'
-    document.body.style.overflowX = 'hidden'
-    document.documentElement.style.overflowX = 'hidden'
     return () => {
       document.body.style.overflow = ''
-      document.body.style.overflowX = ''
-      document.documentElement.style.overflowX = ''
     }
   }, [])
 
@@ -505,9 +501,9 @@ function Carte() {
     <section className="h-[80vh] flex flex-col overflow-x-hidden overflow-y-hidden">
       <div className="mx-auto px-4 md:px-6 max-w-7xl w-full flex flex-col h-[90%]">
         {/* Sélecteur de catégorie */}
-        <div className="bg-black/80 h-[7%] backdrop-blur-sm py-4 px-4 md:px-6 shrink-0 overflow-x-hidden">
-          <div className="overflow-x-hidden w-full">
-            <div className="flex space-x-2 md:justify-center flex-wrap w-full">
+        <div className="bg-black/80 h-[7%] backdrop-blur-sm py-4 -mx-4 md:-mx-6 px-4 md:px-6 shrink-0">
+          <div className="overflow-x-auto scrollbar-hide">
+            <div className="flex space-x-2 min-w-max md:min-w-0 md:justify-center">
               {categories.map((category) => (
                 <button
                   key={category.id}
