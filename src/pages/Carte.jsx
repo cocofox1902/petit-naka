@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
+import { useRestaurant } from '../contexts/RestaurantContext'
 import menuData from '../data/menu.json'
-import soupeMisoImage from '../assets/images/soupe-miso.png'
 
 // Composant pour la barre parallax sous les titres
 function ParallaxBar() {
@@ -328,7 +328,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
         }}
       >
         {displayItems.map((item, index) => {
-          const imageData = getItemImage(item.name, categoryId)
+          const imageData = getItemImage(item, categoryId)
           
           // Calculer l'angle relatif par rapport à l'item actuel
           let relativeIndex = index - currentIndex
@@ -423,72 +423,25 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
 }
 
 function Carte() {
+  const { selectedRestaurantId, selectedRestaurant } = useRestaurant()
   const [activeCategory, setActiveCategory] = useState('entrees')
 
-  // Mapping des images/emojis pour chaque plat
-  const getItemImage = (itemName, categoryId) => {
-    const name = itemName.toLowerCase()
+  // Récupérer le menu du restaurant sélectionné
+  const currentMenuData = useMemo(() => {
+    if (!selectedRestaurantId || !menuData[selectedRestaurantId]) {
+      return {}
+    }
+    return menuData[selectedRestaurantId]
+  }, [selectedRestaurantId])
+
+  // Récupérer l'image depuis le JSON ou utiliser un fallback
+  const getItemImage = (item, categoryId) => {
+    // Si l'item a une image dans le JSON, l'utiliser
+    if (item.image) {
+      return { type: 'image', value: item.image }
+    }
     
-    // Images avec fond transparent ou emojis
-    const imageMap = {
-      // Entrées
-      'soupe miso': { type: 'image', value: soupeMisoImage },
-      'salade de choux': { type: 'emoji', value: '🥗' },
-      'riz nature': { type: 'emoji', value: '🍚' },
-      'salade d\'algues': { type: 'emoji', value: '🌿' },
-      'wakamé': { type: 'emoji', value: '🌿' },
-      'épinard': { type: 'emoji', value: '🥬' },
-      'goma-ae': { type: 'emoji', value: '🥬' },
-      'pomme de terre': { type: 'emoji', value: '🥔' },
-      'aubergine': { type: 'emoji', value: '🍆' },
-      'gyoza': { type: 'image', value: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=200&q=80' },
-      'kara-agué': { type: 'emoji', value: '🍗' },
-      'yakitori': { type: 'emoji', value: '🍢' },
-      'brochette': { type: 'emoji', value: '🍢' },
-      
-      // Domburi
-      'poulet teriyaki': { type: 'image', value: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=200&q=80' },
-      'saumon teriyaki': { type: 'image', value: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=200&q=80' },
-      
-      // Curry
-      'curry': { type: 'image', value: 'https://images.unsplash.com/photo-1585032226651-759b0d6c58c0?w=200&q=80' },
-      
-      // Poké
-      'poké': { type: 'image', value: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&q=80' },
-      'thon': { type: 'emoji', value: '🐟' },
-      
-      // Sushi
-      'california': { type: 'image', value: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=200&q=80' },
-      'nigiri': { type: 'image', value: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=200&q=80' },
-      'sushi': { type: 'image', value: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=200&q=80' },
-      'assortiment': { type: 'image', value: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=200&q=80' },
-      'saumon': { type: 'image', value: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=200&q=80' },
-      
-      // Sashimi
-      'sashimi': { type: 'image', value: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=200&q=80' },
-      
-      // Chirashi
-      'chirashi': { type: 'image', value: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=200&q=80' },
-      
-      // Maki
-      'maki': { type: 'image', value: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=200&q=80' },
-      
-      // Desserts
-      'matcha': { type: 'emoji', value: '🍵' },
-      'cake': { type: 'emoji', value: '🍰' },
-      'dorayaki': { type: 'emoji', value: '🥞' },
-      'daifuku': { type: 'emoji', value: '🍡' },
-      'glace': { type: 'emoji', value: '🍨' },
-    }
-
-    // Chercher une correspondance
-    for (const [key, value] of Object.entries(imageMap)) {
-      if (name.includes(key)) {
-        return value
-      }
-    }
-
-    // Fallback par catégorie
+    // Fallback par catégorie si pas d'image
     const categoryFallbacks = {
       'entrees': { type: 'emoji', value: '🥢' },
       'domburi': { type: 'emoji', value: '🍱' },
@@ -517,12 +470,12 @@ function Carte() {
       'desserts': 'Desserts'
     }
 
-    return Object.keys(menuData).map(categoryId => ({
+    return Object.keys(currentMenuData).map(categoryId => ({
       id: categoryId,
       name: categoryNames[categoryId] || categoryId,
-      data: menuData[categoryId] || []
+      data: currentMenuData[categoryId] || []
     }))
-  }, [])
+  }, [currentMenuData])
 
   // Scroller vers le haut puis désactiver le scroll sur la page
   useEffect(() => {
@@ -570,6 +523,14 @@ function Carte() {
       document.documentElement.style.overflowY = ''
     }
   }, [])
+
+  if (!selectedRestaurant || !selectedRestaurantId) {
+    return (
+      <section className="flex flex-col overflow-x-hidden overflow-y-hidden items-center justify-center h-screen">
+        <p className="text-white text-xl">Veuillez sélectionner un restaurant</p>
+      </section>
+    )
+  }
 
   return (
     <section className="flex flex-col overflow-x-hidden overflow-y-hidden">

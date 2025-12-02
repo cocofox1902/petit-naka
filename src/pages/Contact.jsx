@@ -1,4 +1,12 @@
+import { useRestaurant } from '../contexts/RestaurantContext'
+
 function Contact() {
+  const { selectedRestaurant } = useRestaurant()
+
+  if (!selectedRestaurant) {
+    return null
+  }
+
   return (
     <section className="py-16 md:py-24 bg-black min-h-screen">
       <div className="mx-auto px-4 md:px-6 max-w-6xl">
@@ -28,18 +36,18 @@ function Contact() {
               </div>
               <h3 className="text-white font-bold text-2xl mb-4">Adresse</h3>
               <div className="space-y-3 text-gray-300">
-                <p className="text-lg transition-all duration-300 hover:text-white">4 Rue Merlin</p>
-                <p className="text-lg transition-all duration-300 hover:text-white">75011 Paris</p>
+                <p className="text-lg transition-all duration-300 hover:text-white">{selectedRestaurant.address}</p>
+                <p className="text-lg transition-all duration-300 hover:text-white">{selectedRestaurant.postalCode} {selectedRestaurant.city}</p>
                 <a 
-                  href="tel:+33140330113" 
+                  href={`tel:${selectedRestaurant.phone.replace(/\s/g, '')}`}
                   className="block text-red-600 font-bold text-xl mt-6 transition-all duration-300 hover:text-red-500 hover:scale-105"
                 >
-                  +33 1 40 33 01 13
+                  {selectedRestaurant.phone}
                 </a>
               </div>
             </div>
             <a
-              href="https://www.google.com/maps/search/?api=1&query=4+Rue+Merlin+75011+Paris"
+              href={selectedRestaurant.googleMapsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center text-red-600 text-sm font-medium transition-all duration-300 hover:text-red-500 hover:scale-105"
@@ -134,7 +142,7 @@ function Contact() {
         <div className="mt-12 bg-gray-800 rounded-lg p-6 md:p-8 border border-gray-700/50">
           <h3 className="text-white font-bold text-xl mb-4 text-center">Nous contacter</h3>
           <p className="text-gray-400 text-center mb-4">
-            Vous pouvez également nous contacter au <a href="tel:+33140330113" className="text-red-600 font-bold hover:text-red-500 transition-all duration-300">+33 1 40 33 01 13</a>.
+            Vous pouvez également nous contacter au <a href={`tel:${selectedRestaurant.phone.replace(/\s/g, '')}`} className="text-red-600 font-bold hover:text-red-500 transition-all duration-300">{selectedRestaurant.phone}</a>.
           </p>
         </div>
       </div>

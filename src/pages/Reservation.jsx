@@ -1,4 +1,8 @@
+import { useRestaurant } from '../contexts/RestaurantContext'
+
 function Reservation() {
+  const { selectedRestaurant } = useRestaurant()
+
   // Générer les dates pour novembre 2025
   const generateCalendarDays = () => {
     const days = []
@@ -17,19 +21,23 @@ function Reservation() {
   const calendarDays = generateCalendarDays()
   const weekDays = ['lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.', 'dim.']
 
+  if (!selectedRestaurant) {
+    return null
+  }
+
   return (
     <section className="py-16 md:py-24 bg-black min-h-screen">
       <div className="mx-auto px-4 md:px-6 max-w-2xl">
         <div className="text-center mb-8">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Réservation</h2>
-          <p className="text-gray-400 text-lg">Réservez une table en ligne ou par téléphone au +33 1 40 33 01 13</p>
+          <p className="text-gray-400 text-lg">Réservez une table en ligne ou par téléphone au {selectedRestaurant.phone}</p>
         </div>
 
         {/* Widget TheFork - Visuel non fonctionnel */}
         <div className="bg-white rounded-lg p-6 md:p-8 shadow-2xl max-w-md mx-auto">
           {/* Header avec nom et branding */}
           <div className="mb-6 text-center">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Petit Naka</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{selectedRestaurant.name}</h1>
             <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
               <span>Proposé avec <b>amour</b> par</span>
               <div className="flex items-center gap-1 bg-green-600 text-white px-2 py-1 rounded">
@@ -109,10 +117,10 @@ function Reservation() {
           <div className="mt-8 text-center border-t border-gray-200 pt-6">
             <p className="text-gray-400 text-sm mb-3">Ou appelez-nous directement</p>
             <a 
-              href="tel:+33140330113" 
+              href={`tel:${selectedRestaurant.phone.replace(/\s/g, '')}`}
               className="text-red-600 font-bold text-xl transition-all duration-300 hover:text-red-500 hover:scale-110 inline-block"
             >
-              +33 1 40 33 01 13
+              {selectedRestaurant.phone}
             </a>
           </div>
         </div>

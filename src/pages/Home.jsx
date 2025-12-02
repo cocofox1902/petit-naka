@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Environment } from '@react-three/drei'
+import { useRestaurant } from '../contexts/RestaurantContext'
 import Model3D from '../components/Model3D'
 
 // Composant Carrousel de plats
@@ -205,6 +206,7 @@ function DishCarousel() {
 
 function Home() {
   const location = useLocation()
+  const { restaurants, selectRestaurant, selectedRestaurantId } = useRestaurant()
   const ramenSectionRef = useRef(null)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [modelKey, setModelKey] = useState(0)
@@ -351,25 +353,44 @@ function Home() {
             <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">
               Nos Adresses
             </h2>
-            <p className="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+            <p className="text-gray-400 text-center mb-4 max-w-2xl mx-auto">
               Retrouvez-nous dans plusieurs quartiers de Paris
             </p>
+            {selectedRestaurantId && (
+              <p className="text-gray-500 text-center mb-8 max-w-2xl mx-auto text-sm">
+                Cliquez sur une adresse pour sélectionner un autre restaurant
+              </p>
+            )}
             <div className="max-w-3xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {[
-                  "7 Rue des Fêtes",
-                  "9 Rue Lassus",
-                  "17 Rue des Gâtines",
-                  "4 Rue Merlin"
-                ].map((address, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-4 p-4 border-b border-gray-800 hover:border-red-600/50 transition-colors duration-300"
-                  >
-                    <div className="w-1.5 h-1.5 bg-red-600 rounded-full flex-shrink-0"></div>
-                    <p className="text-gray-300 text-lg">{address}</p>
-                  </div>
-                ))}
+                {restaurants.map((restaurant) => {
+                  const isSelected = selectedRestaurantId === restaurant.id
+                  return (
+                    <button
+                      key={restaurant.id}
+                      onClick={() => selectRestaurant(restaurant.id)}
+                      className={`flex items-center gap-4 p-4 border-b transition-all duration-300 text-left w-full ${
+                        isSelected
+                          ? 'border-red-600 bg-red-600/10 hover:bg-red-600/20'
+                          : 'border-gray-800 hover:border-red-600/50'
+                      }`}
+                    >
+                      <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                        isSelected ? 'bg-red-600 w-2 h-2' : 'bg-red-600'
+                      }`}></div>
+                      <div className="flex-1">
+                        <p className={`text-lg ${
+                          isSelected ? 'text-white font-semibold' : 'text-gray-300'
+                        }`}>
+                          {restaurant.address}
+                        </p>
+                        {isSelected && (
+                          <p className="text-red-600 text-sm mt-1">✓ Restaurant sélectionné</p>
+                        )}
+                      </div>
+                    </button>
+                  )
+                })}
               </div>
             </div>
           </div>
