@@ -526,22 +526,46 @@ function Carte() {
 
   // Scroller vers le haut puis désactiver le scroll sur la page
   useEffect(() => {
-    // Scroller vers le haut immédiatement
-    window.scrollTo(0, 0)
-    document.documentElement.scrollTop = 0
-    document.body.scrollTop = 0
+    // Fonction pour forcer le scroll vers le haut
+    const scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'instant'
+      })
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+      // Pour iOS
+      if (window.pageYOffset) {
+        window.pageYOffset = 0
+      }
+    }
     
-    // Désactiver le scroll après un court délai pour s'assurer que le scroll est terminé
+    // Scroller immédiatement
+    scrollToTop()
+    
+    // Scroller plusieurs fois pour s'assurer que ça fonctionne sur mobile
+    setTimeout(scrollToTop, 0)
+    setTimeout(scrollToTop, 50)
+    setTimeout(scrollToTop, 100)
+    setTimeout(scrollToTop, 200)
+    
+    // Désactiver le scroll après un délai pour s'assurer que le scroll est terminé
     setTimeout(() => {
+      scrollToTop()
       document.body.style.overflow = 'hidden'
       document.body.style.overflowY = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.width = '100%'
       document.documentElement.style.overflow = 'hidden'
       document.documentElement.style.overflowY = 'hidden'
-    }, 100)
+    }, 300)
     
     return () => {
       document.body.style.overflow = ''
       document.body.style.overflowY = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
       document.documentElement.style.overflow = ''
       document.documentElement.style.overflowY = ''
     }
