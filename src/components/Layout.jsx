@@ -238,7 +238,8 @@ function Layout({ children }) {
         {children}
       </main>
 
-      {/* Footer - Avec animation */}
+      {/* Footer - Avec animation - Caché sur la page Carte */}
+      {location.pathname !== '/carte' && (
       <footer className="bg-black text-gray-400 py-6 transition-all duration-300">
         <div className="mx-auto px-4 md:px-6 max-w-7xl">
           <div className="border-t border-gray-800 pt-8 text-center">
@@ -252,6 +253,7 @@ function Layout({ children }) {
           </div>
         </div>
       </footer>
+      )}
     </div>
   )
 }

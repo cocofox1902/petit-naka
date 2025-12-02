@@ -210,7 +210,17 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
         const direction = accumulatedDeltaRef.current > 0 ? -1 : 1
         
         setCurrentIndex(prevIndex => {
-          const newIndex = (prevIndex + direction + items.length) % items.length
+          // Calculer le nouvel index sans modulo (pas de boucle infinie)
+          const newIndex = prevIndex + direction
+          
+          // Limiter entre 0 et items.length - 1
+          if (newIndex < 0) {
+            return 0 // Déjà au premier item, ne pas aller plus loin
+          }
+          if (newIndex >= items.length) {
+            return items.length - 1 // Déjà au dernier item, ne pas aller plus loin
+          }
+          
           return newIndex
         })
         
@@ -247,7 +257,17 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
         const direction = accumulatedDeltaRef.current > 0 ? -1 : 1
         
         setCurrentIndex(prevIndex => {
-          const newIndex = (prevIndex + direction + items.length) % items.length
+          // Calculer le nouvel index sans modulo (pas de boucle infinie)
+          const newIndex = prevIndex + direction
+          
+          // Limiter entre 0 et items.length - 1
+          if (newIndex < 0) {
+            return 0 // Déjà au premier item, ne pas aller plus loin
+          }
+          if (newIndex >= items.length) {
+            return items.length - 1 // Déjà au dernier item, ne pas aller plus loin
+          }
+          
           return newIndex
         })
         
@@ -285,7 +305,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full h-[750px] md:hidden"
+      className="relative w-full h-full md:hidden"
       style={{ perspective: '1000px' }}
     >
       {/* Arc visible - on ne montre qu'une partie du cercle sur le côté */}
@@ -395,7 +415,6 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
 
 function Carte() {
   const [activeCategory, setActiveCategory] = useState('entrees')
-  const sectionRefs = useRef({})
 
   // Mapping des images/emojis pour chaque plat
   const getItemImage = (itemName, categoryId) => {
@@ -488,87 +507,54 @@ function Carte() {
     { id: 'desserts', name: 'Desserts', data: menuData.desserts, image: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&q=80' },
   ], [])
 
-  const scrollToSection = (categoryId) => {
-    const element = sectionRefs.current[categoryId]
-    if (element) {
-      const headerOffset = 100
-      const elementPosition = element.getBoundingClientRect().top
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset
-
-      setActiveCategory(categoryId)
-      
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      })
-    }
-  }
 
 
+  // Désactiver le scroll sur la page
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 150
-
-      for (let i = categories.length - 1; i >= 0; i--) {
-        const category = categories[i]
-        const element = sectionRefs.current[category.id]
-        if (element) {
-          const elementTop = element.offsetTop
-          if (scrollPosition >= elementTop) {
-            setActiveCategory(category.id)
-            break
-          }
-        }
-      }
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
     }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [categories])
+  }, [])
 
   return (
-    <section className="py-16 md:py-24 bg-black min-h-screen overflow-x-hidden">
-      <div className="mx-auto px-4 md:px-6 max-w-7xl w-full">
-        {/* Header */}
-        <div className="text-center mb-16 md:mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Notre Carte</h2>
-          <div className="w-24 h-1 bg-red-600 mx-auto mb-4"></div>
-          <p className="text-gray-400 text-lg">Plats traditionnels préparés avec des ingrédients frais</p>
-        </div>
-
-        {/* Menu sticky */}
-        <div className='h-screen'>
-          <div className="bg-black/80 backdrop-blur-sm mb-12 py-6 -mx-4 md:-mx-6 px-4 md:px-6">
-            <div className="overflow-x-auto scrollbar-hide">
-              <div className="flex space-x-2 min-w-max md:min-w-0 md:justify-center">
-                {categories.map((category) => (
-                  <button
-                    key={category.id}
-                    onClick={() => scrollToSection(category.id)}
-                    className={`px-4 py-2 text-sm whitespace-nowrap transition-all duration-300 rounded-lg ${
-                      activeCategory === category.id
-                        ? 'text-white bg-red-600 font-semibold shadow-lg'
-                        : 'text-white bg-black hover:bg-gray-900'
-                    }`}
-                  >
-                    {category.name}
-                  </button>
-                ))}
-              </div>
+    <section className="h-[80vh] bg-black overflow-hidden flex flex-col">
+      <div className="mx-auto px-4 md:px-6 max-w-7xl w-full flex flex-col h-full">
+        {/* Sélecteur de catégorie */}
+        <div className="bg-black/80 backdrop-blur-sm py-4 -mx-4 md:-mx-6 px-4 md:px-6 shrink-0">
+          <div className="overflow-x-auto scrollbar-hide">
+            <div className="flex space-x-2 min-w-max md:min-w-0 md:justify-center">
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => {
+                    setActiveCategory(category.id)
+                  }}
+                  className={`px-4 py-2 text-sm whitespace-nowrap transition-all duration-300 rounded-lg ${
+                    activeCategory === category.id
+                      ? 'text-white bg-red-600 font-semibold shadow-lg'
+                      : 'text-white bg-black hover:bg-gray-900'
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
             </div>
           </div>
-          <div className="space-y-16 md:space-y-20">
-              {(() => {
-                const activeCategoryData = categories.find(cat => cat.id === activeCategory)
-                return activeCategoryData ? (
-                  <WheelCarousel 
-                    items={activeCategoryData.data} 
-                    getItemImage={getItemImage}
-                    categoryId={activeCategory}
-                  />
-                ) : null
-              })()}
-          </div>
+        </div>
+
+        {/* Carrousel cercle - prend toute la hauteur restante */}
+        <div className="flex-1 overflow-hidden">
+          {(() => {
+            const activeCategoryData = categories.find(cat => cat.id === activeCategory)
+            return activeCategoryData ? (
+              <WheelCarousel 
+                items={activeCategoryData.data} 
+                getItemImage={getItemImage}
+                categoryId={activeCategory}
+              />
+            ) : null
+          })()}
         </div>
       </div>
     </section>
