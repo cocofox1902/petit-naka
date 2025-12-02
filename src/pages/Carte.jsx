@@ -237,7 +237,15 @@ function WheelCarousel({ items, getItemImage }) {
       style={{ perspective: '1000px' }}
     >
       {/* Arc visible - on ne montre qu'une partie du cercle sur le côté */}
-      <div className="absolute flex items-center justify-end pr-8" style={{ alignSelf: 'anchor-center' }}>
+      {/* Le conteneur est positionné pour que l'item actif (à x=radius, y=0) soit centré verticalement */}
+      <div 
+        className="absolute"
+        style={{
+          left: '50%',
+          top: '35%',
+          transform: `translate(-${400}px)`
+        }}
+      >
         {items.map((item, index) => {
           const imageData = getItemImage(item.name, 'entrees')
           
@@ -328,11 +336,7 @@ function WheelCarousel({ items, getItemImage }) {
           )
         })}
       </div>
-      
-      {/* Indicateur de scroll */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white text-xs opacity-50">
-        Scroll pour naviguer
-      </div>
+    
     </div>
   )
 }
