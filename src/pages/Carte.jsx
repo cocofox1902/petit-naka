@@ -498,7 +498,7 @@ function Carte() {
   }, [])
 
   return (
-    <section className="h-[80vh] bg-black flex flex-col">
+    <section className="h-[90vh] bg-red-600 flex flex-col overflow-x-hidden overflow-y-hidden">
       <div className="mx-auto px-4 md:px-6 max-w-7xl w-full flex flex-col h-full">
         {/* Sélecteur de catégorie */}
         <div className="bg-black/80 backdrop-blur-sm py-4 -mx-4 md:-mx-6 px-4 md:px-6 shrink-0">
@@ -524,7 +524,7 @@ function Carte() {
         </div>
 
         {/* Carrousel cercle - prend toute la hauteur restante */}
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1">
           {(() => {
             const activeCategoryData = categories.find(cat => cat.id === activeCategory)
             return activeCategoryData ? (
