@@ -286,7 +286,6 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
     <div 
       ref={containerRef}
       className="relative w-full h-full md:hidden"
-      style={{ perspective: '1000px' }}
     >
       {/* Arc visible - on ne montre qu'une partie du cercle sur le côté */}
       {/* Le conteneur est positionné pour que l'item actif (à x=radius, y=0) soit centré verticalement */}
