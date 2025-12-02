@@ -186,6 +186,8 @@ function WheelCarousel({ items, getItemImage }) {
 
   useEffect(() => {
     const scrollThreshold = 80 // Seuil pour changer d'item
+    let touchStartY = 0
+    let touchEndY = 0
 
     const handleWheel = (e) => {
       e.preventDefault()
@@ -218,11 +220,53 @@ function WheelCarousel({ items, getItemImage }) {
       }
     }
 
+    const handleTouchStart = (e) => {
+      touchStartY = e.touches[0].clientY
+    }
+
+    const handleTouchMove = (e) => {
+      e.preventDefault()
+      
+      if (isScrollingRef.current) return
+
+      touchEndY = e.touches[0].clientY
+      const delta = touchStartY - touchEndY
+      accumulatedDeltaRef.current += delta
+      touchStartY = touchEndY
+
+      // Détecter la direction
+      if (Math.abs(accumulatedDeltaRef.current) >= scrollThreshold) {
+        const direction = accumulatedDeltaRef.current > 0 ? 1 : -1
+        
+        setCurrentIndex(prevIndex => {
+          const newIndex = (prevIndex + direction + items.length) % items.length
+          return newIndex
+        })
+        
+        accumulatedDeltaRef.current = 0
+        isScrollingRef.current = true
+        
+        // Snap avec animation
+        if (scrollTimeout.current) {
+          clearTimeout(scrollTimeout.current)
+        }
+        
+        scrollTimeout.current = setTimeout(() => {
+          isScrollingRef.current = false
+        }, 600)
+      }
+    }
+
     const container = containerRef.current
     if (container) {
       container.addEventListener('wheel', handleWheel, { passive: false })
+      container.addEventListener('touchstart', handleTouchStart, { passive: false })
+      container.addEventListener('touchmove', handleTouchMove, { passive: false })
+      
       return () => {
         container.removeEventListener('wheel', handleWheel)
+        container.removeEventListener('touchstart', handleTouchStart)
+        container.removeEventListener('touchmove', handleTouchMove)
         if (scrollTimeout.current) {
           clearTimeout(scrollTimeout.current)
         }
@@ -343,7 +387,6 @@ function WheelCarousel({ items, getItemImage }) {
 
 function Carte() {
   const [activeCategory, setActiveCategory] = useState('entrees')
-  const [hideScrollbar, setHideScrollbar] = useState(false)
   const sectionRefs = useRef({})
 
   // Mapping des images/emojis pour chaque plat
@@ -444,34 +487,15 @@ function Carte() {
       const elementPosition = element.getBoundingClientRect().top
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset
 
-      // Masquer la barre de scroll
-      setHideScrollbar(true)
+      setActiveCategory(categoryId)
       
       window.scrollTo({
         top: offsetPosition,
         behavior: 'smooth'
       })
-      setActiveCategory(categoryId)
-
-      // Réafficher la barre de scroll après le défilement
-      const scrollDuration = 800 // Durée approximative du smooth scroll
-      setTimeout(() => {
-        setHideScrollbar(false)
-      }, scrollDuration)
     }
   }
 
-  // Gérer le masquage de la barre de scroll
-  useEffect(() => {
-    if (hideScrollbar) {
-      document.documentElement.style.overflow = 'hidden'
-    } else {
-      document.documentElement.style.overflow = ''
-    }
-    return () => {
-      document.documentElement.style.overflow = ''
-    }
-  }, [hideScrollbar])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -534,11 +558,6 @@ function Carte() {
                 ref={(el) => (sectionRefs.current[category.id] = el)}
                 className="scroll-mt-24"
               >
-                {/* Titre de la catégorie */}
-                <div className="mb-6 md:mb-8">
-                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">{category.name}</h3>
-                  <ParallaxBar />
-                </div>
 
                 {/* Items du menu - Roue pour entrées, grille pour les autres */}
                 {category.id === 'entrees' ? (
