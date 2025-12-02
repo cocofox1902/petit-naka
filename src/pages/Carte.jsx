@@ -529,59 +529,32 @@ function Carte() {
         </div>
 
         {/* Menu sticky */}
-        <div className="sticky top-20 z-40 bg-black/80 backdrop-blur-sm mb-12 py-6 -mx-4 md:-mx-6 px-4 md:px-6">
-          <div className="overflow-x-auto scrollbar-hide">
-            <div className="flex space-x-2 min-w-max md:min-w-0 md:justify-center">
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => scrollToSection(category.id)}
-                  className={`px-4 py-2 text-sm whitespace-nowrap transition-all duration-300 rounded-lg ${
-                    activeCategory === category.id
-                      ? 'text-white bg-red-600 font-semibold shadow-lg'
-                      : 'text-white bg-black hover:bg-gray-900'
-                  }`}
-                >
-                  {category.name}
-                </button>
-              ))}
+        <div className='h-screen'>
+          <div className="bg-black/80 backdrop-blur-sm mb-12 py-6 -mx-4 md:-mx-6 px-4 md:px-6">
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="flex space-x-2 min-w-max md:min-w-0 md:justify-center">
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => scrollToSection(category.id)}
+                    className={`px-4 py-2 text-sm whitespace-nowrap transition-all duration-300 rounded-lg ${
+                      activeCategory === category.id
+                        ? 'text-white bg-red-600 font-semibold shadow-lg'
+                        : 'text-white bg-black hover:bg-gray-900'
+                    }`}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Toutes les catégories affichées */}
-        <div className="space-y-16 md:space-y-20">
-          {categories.map((category) => (
-              <div
-                key={category.id}
-                id={category.id}
-                ref={(el) => (sectionRefs.current[category.id] = el)}
-                className="scroll-mt-24"
-              >
-
-                {/* Items du menu - Roue pour entrées, grille pour les autres */}
-                {category.id === 'entrees' ? (
-                  <WheelCarousel 
-                    items={category.data} 
-                    getItemImage={getItemImage}
-                  />
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 justify-items-center">
-                    {category.data.map((item, index) => {
-                      const imageData = getItemImage(item.name, category.id)
-                      
-                      return (
-                        <MenuItem
-                          key={index}
-                          item={item}
-                          imageData={imageData}
-                        />
-                      )
-                    })}
-                  </div>
-                )}
-              </div>
-          ))}
+          <div className="space-y-16 md:space-y-20">
+              <WheelCarousel 
+                items={menuData.entrees} 
+                getItemImage={getItemImage}
+              />
+          </div>
         </div>
       </div>
     </section>
