@@ -1,0 +1,201 @@
+{
+  "entrees": [
+    {
+      "name": "Soupe Miso",
+      "price": 2.9,
+      "description": ""
+    },
+    {
+      "name": "Salade de Choux",
+      "price": 2.9,
+      "description": ""
+    },
+    {
+      "name": "Riz Nature",
+      "price": 2.5,
+      "description": ""
+    },
+    {
+      "name": "Salade d'algues wakamé (100g)",
+      "price": 3.6,
+      "description": ""
+    },
+    {
+      "name": "Salade d'épinard goma-ae (100g)",
+      "price": 3.6,
+      "description": ""
+    },
+    {
+      "name": "Salade de pomme de terre (100g)",
+      "price": 3.6,
+      "description": ""
+    },
+    {
+      "name": "Aubergines marinées (100g)",
+      "price": 3.9,
+      "description": ""
+    },
+    {
+      "name": "Gyoza au poulet (5 pcs)",
+      "price": 5.9,
+      "description": ""
+    },
+    {
+      "name": "Gyoza aux légumes (5 pcs)",
+      "price": 5.9,
+      "description": ""
+    },
+    {
+      "name": "Beignets de poulet kara-agué (100g)",
+      "price": 4,
+      "description": ""
+    },
+    {
+      "name": "Brochette Yakitori neguima / tsukuné (1 pièce)",
+      "price": 2.9,
+      "description": ""
+    }
+  ],
+  "domburi": [
+    {
+      "name": "Poulet Teriyaki",
+      "price": 10,
+      "description": "Poulet grillé à la sauce sucrée sur un bol de riz"
+    },
+    {
+      "name": "Saumon Teriyaki (2 tranches)",
+      "price": 10,
+      "description": "Saumon grillé à la sauce sucrée sur un bol de riz"
+    },
+    {
+      "name": "Yakitori Poulet",
+      "price": 11,
+      "description": "3 brochettes de poulet au choix sur un bol de riz"
+    }
+  ],
+  "curry": [
+    {
+      "name": "Curry végétarien",
+      "price": 11,
+      "description": "Oignons, carottes, pomme de terre"
+    },
+    {
+      "name": "Curry Poulet",
+      "price": 13,
+      "description": "Kara-agué ou 3 gyoza au choix"
+    }
+  ],
+  "poke": [
+    {
+      "name": "Poké Saumon",
+      "price": 13,
+      "description": "Poissons marinés, algues, carottes, mangue, avocat, ananas, edamamé, gingembre, grenade, citron, coriandre sur un bol de riz vinaigré"
+    },
+    {
+      "name": "Poké Thon",
+      "price": 14,
+      "description": "Poissons marinés, algues, carottes, mangue, avocat, ananas, edamamé, gingembre, grenade, citron, coriandre sur un bol de riz vinaigré"
+    },
+    {
+      "name": "Poké Végétarien (Aubergines)",
+      "price": 12.5,
+      "description": "Poissons marinés, algues, carottes, mangue, avocat, ananas, edamamé, gingembre, grenade, citron, coriandre sur un bol de riz vinaigré"
+    }
+  ],
+  "sushi": [
+    {
+      "name": "California & nigiri saumon (10 pcs)",
+      "price": 14,
+      "description": "4 nigiri saumon + 6 california saumon",
+      "note": "Servi avec une soupe miso OU une salade de choux le midi"
+    },
+    {
+      "name": "Assortiment de sushi (12 pcs)",
+      "price": 15.9,
+      "description": "6 nigiri variés + 6 maki saumon variés",
+      "note": "Servi avec une soupe miso OU une salade de choux le midi"
+    },
+    {
+      "name": "Saumon Mixte (19 pcs)",
+      "price": 15.9,
+      "description": "10 maki saumon variés + 3 nigiri saumon + 6 sashimi saumon",
+      "note": "Servi avec une soupe miso OU une salade de choux le midi"
+    }
+  ],
+  "sashimi": [
+    {
+      "name": "Sashimi Variés (18 pcs)",
+      "price": 18,
+      "description": "Saumon, thon, daurade, maquereau",
+      "note": "Servi avec un bol de riz nature et une soupe miso OU une salade de choux le midi"
+    },
+    {
+      "name": "Sashimi Saumon (18 pcs)",
+      "price": 17.5,
+      "note": "Servi avec un bol de riz nature et une soupe miso OU une salade de choux le midi"
+    }
+  ],
+  "chirashi": [
+    {
+      "name": "Chirashi Saumon",
+      "price": 14.9,
+      "note": "Servi avec une soupe miso OU une salade de choux le midi. Supplément avocat + 1,5"
+    },
+    {
+      "name": "Petit Chirashi Assortiment",
+      "price": 14.9,
+      "note": "Servi avec une soupe miso OU une salade de choux le midi. Supplément avocat + 1,5"
+    },
+    {
+      "name": "Chirashi Assortiment",
+      "price": 19.9,
+      "description": "Saumon, thon, daurade, maquereau, poulpe, œufs de saumon, tamago, crevette",
+      "note": "Servi avec une soupe miso OU une salade de choux le midi. Supplément avocat + 1,5"
+    }
+  ],
+  "maki": [
+    {
+      "name": "Maki saumon varié (12 pcs)",
+      "price": 8,
+      "description": ""
+    },
+    {
+      "name": "California Saumon (6 pcs)",
+      "price": 7.9,
+      "description": ""
+    },
+    {
+      "name": "California Végétarien (6 pcs)",
+      "price": 7,
+      "description": ""
+    },
+    {
+      "name": "Maki Végétarien (15 pcs)",
+      "price": 8,
+      "description": ""
+    }
+  ],
+  "desserts": [
+    {
+      "name": "Cake au thé vert matcha (maison)",
+      "price": 4,
+      "description": ""
+    },
+    {
+      "name": "Dorayaki",
+      "price": 4,
+      "description": ""
+    },
+    {
+      "name": "Daifuku",
+      "price": 4.5,
+      "description": ""
+    },
+    {
+      "name": "Glace maison (thé vert matcha ou sésame)",
+      "price": 4,
+      "description": ""
+    }
+  ]
+}
+

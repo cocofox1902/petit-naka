@@ -1,0 +1,9 @@
+/* Styles personnalisés pour Petit Naka */
+* {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
