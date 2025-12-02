@@ -322,8 +322,8 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
       <div 
         className="absolute"
         style={{
-          left: '45%',
-          top: '20%',
+          left: '42%',
+          top: '18%',
           transform: `translate(-${375}px)`
         }}
       >
