@@ -188,7 +188,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
   }, [categoryId])
 
   // Rayon du cercle (en pixels)
-  const radius = 300
+  const radius = 250
   // Angle de départ (pour positionner l'item actif sur le côté droit)
   const startAngle = 0
 
@@ -285,7 +285,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full h-[80%] md:hidden"
+      className="relative w-full h-[80%] md:hidden overflow-hidden"
     >
       {/* Arc visible - on ne montre qu'une partie du cercle sur le côté */}
       {/* Le conteneur est positionné pour que l'item actif (à x=radius, y=0) soit centré verticalement */}
@@ -294,7 +294,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
         style={{
           left: '50%',
           top: '35%',
-          transform: `translate(-${400}px)`
+          transform: `translate(-${350}px)`
         }}
       >
         {items.map((item, index) => {
@@ -349,7 +349,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
               <div className="flex flex-col bg-white p-4 rounded-xl w-[250px]">
                 <div className="flex flex-col items-center">
                   {/* Image ou emoji */}
-                  <div className="h-32 rounded-lg overflow-hidden flex items-center justify-center mb-2 bg-gray-50">
+                  <div className="h-48 rounded-lg overflow-hidden flex items-center justify-center mb-2 bg-gray-50">
                     {imageData.type === 'image' ? (
                       <img 
                         src={imageData.value}
@@ -497,7 +497,7 @@ function Carte() {
   }, [])
 
   return (
-    <section className="flex flex-col overflow-x-hidden overflow-y-hidden pt-4">
+    <section className="flex flex-col overflow-x-hidden overflow-y-hidden">
       <div className="mx-auto max-w-7xl w-full flex flex-col h-[90%]">
         {/* Sélecteur de catégorie */}
         <div className="bg-black/80 h-[7%] backdrop-blur-sm py-4 -mx-4 md:-mx-6 px-4 md:px-6 shrink-0">
