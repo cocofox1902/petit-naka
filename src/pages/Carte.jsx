@@ -285,7 +285,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full h-full md:hidden"
+      className="relative w-full h-[80%] md:hidden"
       style={{ perspective: '1000px' }}
     >
       {/* Arc visible - on ne montre qu'une partie du cercle sur le côté */}
@@ -498,10 +498,10 @@ function Carte() {
   }, [])
 
   return (
-    <section className="h-[90vh] bg-red-600 flex flex-col overflow-x-hidden overflow-y-hidden">
-      <div className="mx-auto px-4 md:px-6 max-w-7xl w-full flex flex-col h-full">
+    <section className="h-[90vh] flex flex-col overflow-x-hidden overflow-y-hidden bg-amber-600">
+      <div className="mx-auto px-4 md:px-6 max-w-7xl w-full flex flex-col h-[90%] bg-red-500">
         {/* Sélecteur de catégorie */}
-        <div className="bg-black/80 backdrop-blur-sm py-4 -mx-4 md:-mx-6 px-4 md:px-6 shrink-0">
+        <div className="bg-black/80 h-[7%] backdrop-blur-sm py-4 -mx-4 md:-mx-6 px-4 md:px-6 shrink-0 bg-green-500">
           <div className="overflow-x-auto scrollbar-hide">
             <div className="flex space-x-2 min-w-max md:min-w-0 md:justify-center">
               {categories.map((category) => (
@@ -524,7 +524,7 @@ function Carte() {
         </div>
 
         {/* Carrousel cercle - prend toute la hauteur restante */}
-        <div className="flex-1">
+        <div className="h-[80%] bg-blue-500">
           {(() => {
             const activeCategoryData = categories.find(cat => cat.id === activeCategory)
             return activeCategoryData ? (
