@@ -172,12 +172,20 @@ function MenuItem({ item, imageData, isVisible = true }) {
 }
 
 // Composant de roue pour les entrées
-function WheelCarousel({ items, getItemImage }) {
+function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
   const containerRef = useRef(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const isScrollingRef = useRef(false)
   const scrollTimeout = useRef(null)
   const accumulatedDeltaRef = useRef(0)
+
+  // Réinitialiser l'index quand la catégorie change
+  useEffect(() => {
+    setTimeout(() => {
+      setCurrentIndex(0)
+      accumulatedDeltaRef.current = 0
+    }, 0)
+  }, [categoryId])
 
   // Rayon du cercle (en pixels)
   const radius = 300
@@ -197,9 +205,9 @@ function WheelCarousel({ items, getItemImage }) {
       const delta = e.deltaY
       accumulatedDeltaRef.current += delta
 
-      // Détecter la direction
+      // Détecter la direction (inversée)
       if (Math.abs(accumulatedDeltaRef.current) >= scrollThreshold) {
-        const direction = accumulatedDeltaRef.current > 0 ? 1 : -1
+        const direction = accumulatedDeltaRef.current > 0 ? -1 : 1
         
         setCurrentIndex(prevIndex => {
           const newIndex = (prevIndex + direction + items.length) % items.length
@@ -234,9 +242,9 @@ function WheelCarousel({ items, getItemImage }) {
       accumulatedDeltaRef.current += delta
       touchStartY = touchEndY
 
-      // Détecter la direction
+      // Détecter la direction (inversée)
       if (Math.abs(accumulatedDeltaRef.current) >= scrollThreshold) {
-        const direction = accumulatedDeltaRef.current > 0 ? 1 : -1
+        const direction = accumulatedDeltaRef.current > 0 ? -1 : 1
         
         setCurrentIndex(prevIndex => {
           const newIndex = (prevIndex + direction + items.length) % items.length
@@ -291,7 +299,7 @@ function WheelCarousel({ items, getItemImage }) {
         }}
       >
         {items.map((item, index) => {
-          const imageData = getItemImage(item.name, 'entrees')
+          const imageData = getItemImage(item.name, categoryId)
           
           // Calculer l'angle relatif par rapport à l'item actuel
           let relativeIndex = index - currentIndex
@@ -550,10 +558,16 @@ function Carte() {
             </div>
           </div>
           <div className="space-y-16 md:space-y-20">
-              <WheelCarousel 
-                items={menuData.entrees} 
-                getItemImage={getItemImage}
-              />
+              {(() => {
+                const activeCategoryData = categories.find(cat => cat.id === activeCategory)
+                return activeCategoryData ? (
+                  <WheelCarousel 
+                    items={activeCategoryData.data} 
+                    getItemImage={getItemImage}
+                    categoryId={activeCategory}
+                  />
+                ) : null
+              })()}
           </div>
         </div>
       </div>
