@@ -250,7 +250,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
         
         scrollTimeout.current = setTimeout(() => {
           isScrollingRef.current = false
-        }, 10)
+        }, 200)
       }
     }
 
@@ -287,7 +287,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
         
         scrollTimeout.current = setTimeout(() => {
           isScrollingRef.current = false
-        }, 600)
+        }, 200)
       }
     }
 
@@ -368,7 +368,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
           return (
             <div
               key={index}
-              className="absolute transition-all duration-600 ease-out"
+              className="absolute transition-all duration-200 ease-out"
               style={{
                 transform: `translate(${x}px, ${y}px) rotate(${itemRotation}deg) scale(${scale})`,
                 opacity: opacity,
