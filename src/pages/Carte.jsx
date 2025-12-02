@@ -500,9 +500,6 @@ function Carte() {
   return (
     <section className="h-[80vh] bg-black flex flex-col">
       <div className="mx-auto px-4 md:px-6 max-w-7xl w-full flex flex-col h-full">
-        <div>
-          <h1 className="text-white text-2xl font-bold mt-10 text-center mb-4">Notre Carte</h1>
-        </div>
         {/* Sélecteur de catégorie */}
         <div className="bg-black/80 backdrop-blur-sm py-4 -mx-4 md:-mx-6 px-4 md:px-6 shrink-0">
           <div className="overflow-x-auto scrollbar-hide">
