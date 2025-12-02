@@ -175,17 +175,43 @@ function MenuItem({ item, imageData, isVisible = true }) {
 function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
   const containerRef = useRef(null)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isVisible, setIsVisible] = useState(false)
   const isScrollingRef = useRef(false)
   const scrollTimeout = useRef(null)
   const accumulatedDeltaRef = useRef(0)
 
+  // Dupliquer les items si nécessaire pour avoir au moins 8 items
+  const displayItems = useMemo(() => {
+    const minItems = 8
+    if (items.length >= minItems) {
+      return items
+    }
+    // Dupliquer les items jusqu'à avoir au moins 8
+    const duplicated = []
+    while (duplicated.length < minItems) {
+      duplicated.push(...items)
+    }
+    return duplicated.slice(0, minItems)
+  }, [items])
+
   // Réinitialiser l'index quand la catégorie change
   useEffect(() => {
     setTimeout(() => {
-      setCurrentIndex(0)
-      accumulatedDeltaRef.current = 0
+      setIsVisible(false)
+      setTimeout(() => {
+        setCurrentIndex(0)
+        accumulatedDeltaRef.current = 0
+        setIsVisible(true)
+      }, 350)
     }, 0)
   }, [categoryId])
+
+  // Animation d'entrée au premier montage
+  useEffect(() => {
+    setTimeout(() => {
+      setIsVisible(true)
+    }, 300)
+  }, [])
 
   // Rayon du cercle (en pixels)
   const radius = 250
@@ -210,7 +236,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
         const direction = accumulatedDeltaRef.current > 0 ? -1 : 1
         
         setCurrentIndex(prevIndex => {
-          const newIndex = (prevIndex + direction + items.length) % items.length
+          const newIndex = (prevIndex + direction + displayItems.length) % displayItems.length
           return newIndex
         })
         
@@ -247,7 +273,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
         const direction = accumulatedDeltaRef.current > 0 ? -1 : 1
         
         setCurrentIndex(prevIndex => {
-          const newIndex = (prevIndex + direction + items.length) % items.length
+          const newIndex = (prevIndex + direction + displayItems.length) % displayItems.length
           return newIndex
         })
         
@@ -280,12 +306,16 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
         }
       }
     }
-  }, [items.length])
+  }, [displayItems.length])
 
   return (
     <div 
       ref={containerRef}
       className="relative w-full h-[85%] md:hidden overflow-hidden"
+      style={{
+        transform: isVisible ? 'translateX(0)' : 'translateX(-100%)',
+        transition: 'transform 0.8s ease-out'
+      }}
     >
       {/* Arc visible - on ne montre qu'une partie du cercle sur le côté */}
       {/* Le conteneur est positionné pour que l'item actif (à x=radius, y=0) soit centré verticalement */}
@@ -297,16 +327,16 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
           transform: `translate(-${375}px)`
         }}
       >
-        {items.map((item, index) => {
+        {displayItems.map((item, index) => {
           const imageData = getItemImage(item.name, categoryId)
           
           // Calculer l'angle relatif par rapport à l'item actuel
           let relativeIndex = index - currentIndex
           // Normaliser pour le chemin le plus court
-          if (relativeIndex > items.length / 2) {
-            relativeIndex -= items.length
-          } else if (relativeIndex < -items.length / 2) {
-            relativeIndex += items.length
+          if (relativeIndex > displayItems.length / 2) {
+            relativeIndex -= displayItems.length
+          } else if (relativeIndex < -displayItems.length / 2) {
+            relativeIndex += displayItems.length
           }
           
           // Angle sur l'arc (de -60° à +60° pour l'arc visible)
@@ -474,26 +504,41 @@ function Carte() {
     return categoryFallbacks[categoryId] || { type: 'emoji', value: '🍽️' }
   }
 
-  const categories = useMemo(() => [
-    { id: 'entrees', name: 'Entrées / Accompagnements', data: menuData.entrees, image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80' },
-    { id: 'domburi', name: 'Domburi', data: menuData.domburi, image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=600&q=80' },
-    { id: 'curry', name: 'Curry Japonais', data: menuData.curry, image: 'https://images.unsplash.com/photo-1585032226651-759b0d6c58c0?w=600&q=80' },
-    { id: 'poke', name: 'Poké Bowl', data: menuData.poke, image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80' },
-    { id: 'sushi', name: 'Sushi', data: menuData.sushi, image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=600&q=80' },
-    { id: 'sashimi', name: 'Sashimi', data: menuData.sashimi, image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=600&q=80' },
-    { id: 'chirashi', name: 'Chirashi', data: menuData.chirashi, image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=600&q=80' },
-    { id: 'maki', name: 'Maki / California', data: menuData.maki, image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=600&q=80' },
-    { id: 'desserts', name: 'Desserts', data: menuData.desserts, image: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&q=80' },
-  ], [])
+  const categories = useMemo(() => {
+    const categoryNames = {
+      'entrees': 'Entrées / Accompagnements',
+      'domburi': 'Domburi',
+      'curry': 'Curry Japonais',
+      'poke': 'Poké Bowl',
+      'sushi': 'Sushi',
+      'sashimi': 'Sashimi',
+      'chirashi': 'Chirashi',
+      'maki': 'Maki / California',
+      'desserts': 'Desserts'
+    }
 
+    return Object.keys(menuData).map(categoryId => ({
+      id: categoryId,
+      name: categoryNames[categoryId] || categoryId,
+      data: menuData[categoryId] || []
+    }))
+  }, [])
 
-
-  // Désactiver le scroll sur la page
+  // Scroller vers le haut puis désactiver le scroll sur la page
   useEffect(() => {
-    document.body.style.overflow = 'hidden'
-    document.body.style.overflowY = 'hidden'
-    document.documentElement.style.overflow = 'hidden'
-    document.documentElement.style.overflowY = 'hidden'
+    // Scroller vers le haut immédiatement
+    window.scrollTo(0, 0)
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+    
+    // Désactiver le scroll après un court délai pour s'assurer que le scroll est terminé
+    setTimeout(() => {
+      document.body.style.overflow = 'hidden'
+      document.body.style.overflowY = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
+      document.documentElement.style.overflowY = 'hidden'
+    }, 100)
+    
     return () => {
       document.body.style.overflow = ''
       document.body.style.overflowY = ''
