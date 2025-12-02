@@ -14,14 +14,21 @@ function RestaurantModal() {
 
   // Animation avec délai
   useEffect(() => {
-    if (showModal) {
-      // Délai avant l'apparition
-      const timer = setTimeout(() => {
-        setIsVisible(true)
-      }, 300) // Délai de 300ms
-      return () => clearTimeout(timer)
-    } else {
-      setIsVisible(false)
+    if (!showModal) {
+      // Réinitialiser l'état de manière asynchrone pour éviter les cascading renders
+      const resetTimer = setTimeout(() => {
+        setIsVisible(false)
+      }, 0)
+      return () => clearTimeout(resetTimer)
+    }
+    
+    // Délai avant l'apparition
+    const timer = setTimeout(() => {
+      setIsVisible(true)
+    }, 1000) // Délai de 1 seconde
+    
+    return () => {
+      clearTimeout(timer)
     }
   }, [showModal])
 
