@@ -376,10 +376,10 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
                 zIndex: isActive ? 10 : 5 - distance,
               }}
             >
-              <div className="flex flex-col bg-white p-4 rounded-xl w-[250px]">
+              <div className="flex flex-col bg-white p-4 rounded-xl w-[300px]">
                 <div className="flex flex-col items-center">
                   {/* Image ou emoji */}
-                  <div className="h-48 rounded-lg overflow-hidden flex items-center justify-center mb-2 bg-gray-50">
+                  <div className="h-64 rounded-lg overflow-hidden flex items-center justify-center mb-2 bg-gray-50">
                     {imageData.type === 'image' ? (
                       <img 
                         src={imageData.value}
@@ -392,22 +392,22 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
                   </div>
 
                   {/* Nom du plat */}
-                  <h4 className="text-black font-bold text-sm mb-1 text-center">
+                  <h4 className="text-black font-bold text-xl my-5 text-center">
                     {item.name}
                   </h4>
 
                   {/* Description */}
                   {item.description && (
-                    <p className="text-gray-700 text-xs text-center mb-1 line-clamp-2">
+                    <p className="text-gray-700 text-lg text-center mb-1 line-clamp-2">
                       {item.description}
                     </p>
                   )}
                 </div>
 
                 {/* Bouton prix */}
-                <div className="mt-2">
+                <div className="mt-4">
                   <div className="bg-amber-800 rounded-3xl py-2 px-4 text-center">
-                    <span className="text-white font-bold text-sm">
+                    <span className="text-white font-bold text-xl">
                       {item.price.toFixed(2)}€
                     </span>
                   </div>
