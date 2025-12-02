@@ -379,7 +379,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
               <div className="flex flex-col bg-white p-4 rounded-xl w-[300px]">
                 <div className="flex flex-col items-center">
                   {/* Image ou emoji */}
-                  <div className="h-64 rounded-lg overflow-hidden flex items-center justify-center mb-2 bg-gray-50">
+                  <div className="h-48 rounded-lg overflow-hidden flex items-center justify-center mb-2 bg-gray-50">
                     {imageData.type === 'image' ? (
                       <img 
                         src={imageData.value}
