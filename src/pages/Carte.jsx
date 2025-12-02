@@ -250,7 +250,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
         
         scrollTimeout.current = setTimeout(() => {
           isScrollingRef.current = false
-        }, 100)
+        }, 10)
       }
     }
 
