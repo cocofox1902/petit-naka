@@ -1,8 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRestaurant } from '../contexts/RestaurantContext'
 
 function RestaurantModal() {
   const { showModal, restaurants, selectRestaurant } = useRestaurant()
+  const [isVisible, setIsVisible] = useState(false)
 
   // Debug: afficher l'état de la modal
   useEffect(() => {
@@ -10,6 +11,19 @@ function RestaurantModal() {
     console.log('RestaurantModal - restaurants:', restaurants)
     console.log('RestaurantModal - localStorage:', localStorage.getItem('selectedRestaurantId'))
   }, [showModal, restaurants])
+
+  // Animation avec délai
+  useEffect(() => {
+    if (showModal) {
+      // Délai avant l'apparition
+      const timer = setTimeout(() => {
+        setIsVisible(true)
+      }, 300) // Délai de 300ms
+      return () => clearTimeout(timer)
+    } else {
+      setIsVisible(false)
+    }
+  }, [showModal])
 
   if (!showModal) {
     return null
@@ -22,31 +36,37 @@ function RestaurantModal() {
 
   return (
     <div className="fixed inset-0 bg-black/80 z-[99999] flex items-center justify-center p-4" style={{ zIndex: 99999 }}>
-      <div className="bg-gray-900 rounded-lg max-w-2xl w-full p-6 md:p-8 border border-gray-700">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-2 text-center">
+      <div 
+        className={`bg-gray-900 rounded-lg max-w-lg w-full p-4 md:p-6 border border-gray-700 transition-all duration-500 ${
+          isVisible 
+            ? 'opacity-100 scale-100' 
+            : 'opacity-0 scale-95'
+        }`}
+      >
+        <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 text-center">
           Choisissez votre restaurant
         </h2>
-        <p className="text-gray-400 text-center mb-8">
+        <p className="text-gray-400 text-center mb-6 text-sm">
           Sélectionnez le restaurant Petit Naka que vous souhaitez visiter
         </p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-3">
           {restaurants.map((restaurant) => (
             <button
               key={restaurant.id}
               onClick={() => selectRestaurant(restaurant.id)}
-              className="bg-gray-800 hover:bg-gray-700 border-2 border-gray-700 hover:border-red-600 rounded-lg p-6 text-left transition-all duration-300 hover:scale-105"
+              className="bg-gray-800 hover:bg-gray-700 border-2 border-gray-700 hover:border-red-600 rounded-lg p-4 text-left transition-all duration-300 hover:scale-105"
             >
-              <div className="flex items-start gap-4">
-                <div className="w-3 h-3 bg-red-600 rounded-full flex-shrink-0 mt-2"></div>
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 bg-red-600 rounded-full shrink-0 mt-2"></div>
                 <div className="flex-1">
-                  <h3 className="text-white font-bold text-lg mb-2">
+                  <h3 className="text-white font-bold text-base mb-1">
                     {restaurant.name}
                   </h3>
-                  <p className="text-gray-300 text-sm mb-1">
+                  <p className="text-gray-300 text-sm mb-0.5">
                     {restaurant.address}
                   </p>
-                  <p className="text-gray-400 text-sm">
+                  <p className="text-gray-400 text-xs">
                     {restaurant.postalCode} {restaurant.city}
                   </p>
                 </div>
