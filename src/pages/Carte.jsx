@@ -285,7 +285,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full h-[90%] md:hidden overflow-hidden"
+      className="relative w-full h-[85%] md:hidden overflow-hidden"
     >
       {/* Arc visible - on ne montre qu'une partie du cercle sur le côté */}
       {/* Le conteneur est positionné pour que l'item actif (à x=radius, y=0) soit centré verticalement */}
@@ -491,8 +491,14 @@ function Carte() {
   // Désactiver le scroll sur la page
   useEffect(() => {
     document.body.style.overflow = 'hidden'
+    document.body.style.overflowY = 'hidden'
+    document.documentElement.style.overflow = 'hidden'
+    document.documentElement.style.overflowY = 'hidden'
     return () => {
       document.body.style.overflow = ''
+      document.body.style.overflowY = ''
+      document.documentElement.style.overflow = ''
+      document.documentElement.style.overflowY = ''
     }
   }, [])
 
