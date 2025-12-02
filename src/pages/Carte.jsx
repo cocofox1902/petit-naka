@@ -210,17 +210,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
         const direction = accumulatedDeltaRef.current > 0 ? -1 : 1
         
         setCurrentIndex(prevIndex => {
-          // Calculer le nouvel index sans modulo (pas de boucle infinie)
-          const newIndex = prevIndex + direction
-          
-          // Limiter entre 0 et items.length - 1
-          if (newIndex < 0) {
-            return 0 // Déjà au premier item, ne pas aller plus loin
-          }
-          if (newIndex >= items.length) {
-            return items.length - 1 // Déjà au dernier item, ne pas aller plus loin
-          }
-          
+          const newIndex = (prevIndex + direction + items.length) % items.length
           return newIndex
         })
         
@@ -257,17 +247,7 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
         const direction = accumulatedDeltaRef.current > 0 ? -1 : 1
         
         setCurrentIndex(prevIndex => {
-          // Calculer le nouvel index sans modulo (pas de boucle infinie)
-          const newIndex = prevIndex + direction
-          
-          // Limiter entre 0 et items.length - 1
-          if (newIndex < 0) {
-            return 0 // Déjà au premier item, ne pas aller plus loin
-          }
-          if (newIndex >= items.length) {
-            return items.length - 1 // Déjà au dernier item, ne pas aller plus loin
-          }
-          
+          const newIndex = (prevIndex + direction + items.length) % items.length
           return newIndex
         })
         
@@ -518,8 +498,11 @@ function Carte() {
   }, [])
 
   return (
-    <section className="h-[80vh] bg-black overflow-hidden flex flex-col">
+    <section className="h-[80vh] bg-black flex flex-col">
       <div className="mx-auto px-4 md:px-6 max-w-7xl w-full flex flex-col h-full">
+        <div>
+          <h1 className="text-white text-2xl font-bold mt-10 text-center mb-4">Notre Carte</h1>
+        </div>
         {/* Sélecteur de catégorie */}
         <div className="bg-black/80 backdrop-blur-sm py-4 -mx-4 md:-mx-6 px-4 md:px-6 shrink-0">
           <div className="overflow-x-auto scrollbar-hide">
