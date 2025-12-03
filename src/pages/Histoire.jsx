@@ -9,12 +9,16 @@ function Histoire() {
           <div className="w-24 h-1 bg-red-600 mx-auto" aria-hidden="true"></div>
         </div>
         
-        {/* Image principale - Intérieur du restaurant */}
+        {/* Image principale - Intérieur du restaurant - LCP image, chargée immédiatement */}
         <div className="mb-12 lg:mb-16 rounded-lg overflow-hidden shadow-2xl">
-          <LazyImage 
+          <img 
             src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1200&q=80" 
             alt="Intérieur du restaurant Petit Naka"
             className="w-full h-96 md:h-[500px] lg:h-[600px] object-cover transition-all duration-700 hover:scale-110"
+            fetchPriority="high"
+            loading="eager"
+            width="1200"
+            height="600"
           />
         </div>
         

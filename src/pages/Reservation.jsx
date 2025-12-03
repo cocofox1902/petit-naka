@@ -56,8 +56,8 @@ function Reservation() {
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 lg:mb-4">{selectedRestaurant.name}</h2>
             <div className="flex items-center justify-center gap-2 text-sm lg:text-base text-gray-600" aria-label="Proposé avec amour par TheFork">
               <span>Proposé avec <strong>amour</strong> par</span>
-              <div className="flex items-center gap-1 bg-green-600 text-white px-2 py-1 lg:px-3 lg:py-1.5 rounded" aria-label="TheFork">
-                <span className="text-xs lg:text-sm font-bold">TheFork</span>
+              <div className="flex items-center gap-1 bg-green-700 text-white px-2 py-1 lg:px-3 lg:py-1.5 rounded" aria-label="TheFork">
+                <span className="text-xs lg:text-sm font-bold text-white">TheFork</span>
               </div>
             </div>
           </div>

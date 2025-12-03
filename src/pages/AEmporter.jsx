@@ -27,12 +27,16 @@ function AEmporter() {
           <p className="text-gray-300 text-lg lg:text-xl">Passez votre commande par téléphone</p>
         </div>
 
-        {/* Grande image de plats à emporter */}
+        {/* Grande image de plats à emporter - LCP image, chargée immédiatement */}
         <div className="mb-12 lg:mb-16 rounded-lg overflow-hidden shadow-2xl">
-          <LazyImage 
+          <img 
             src="https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=1200&q=80" 
             alt="Plats à emporter"
             className="w-full h-80 md:h-96 lg:h-[500px] object-cover transition-all duration-700 hover:scale-110"
+            fetchPriority="high"
+            loading="eager"
+            width="1200"
+            height="500"
           />
         </div>
 

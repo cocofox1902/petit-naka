@@ -131,11 +131,21 @@ function MenuItem({ item, imageData, isVisible = true }) {
         {/* Image ou emoji */}
         <div className="h-48 md:h-56 lg:h-64 w-full rounded-lg overflow-hidden flex items-center justify-center mb-4 bg-gray-50">
           {imageData.type === 'image' ? (
-            <img 
-              src={imageData.value}
-              alt={item.name}
-              className="w-full h-full object-cover"
-            />
+            <picture>
+              <source 
+                srcSet={`${optimizeImageUrl(imageData.value, 300)} 300w, ${optimizeImageUrl(imageData.value, 400)} 400w, ${optimizeImageUrl(imageData.value, 600)} 600w`}
+                type="image/webp"
+                sizes="(max-width: 768px) 300px, (max-width: 1024px) 400px, 600px"
+              />
+              <img 
+                src={optimizeImageUrl(imageData.value, 400)}
+                alt={item.name}
+                className="w-full h-full object-cover"
+                loading="lazy"
+                width="400"
+                height="533"
+              />
+            </picture>
           ) : (
             <span className="text-6xl md:text-7xl lg:text-8xl">{imageData.value}</span>
           )}
@@ -196,23 +206,25 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
     return duplicated.slice(0, minItems)
   }, [items])
 
-  // Réinitialiser l'index quand la catégorie change
+  // Réinitialiser l'index quand la catégorie change - optimisé pour réduire les délais
   useEffect(() => {
-    setTimeout(() => {
+    // Utiliser requestAnimationFrame pour un rendu plus rapide
+    requestAnimationFrame(() => {
       setIsVisible(false)
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         setCurrentIndex(0)
         accumulatedDeltaRef.current = 0
         setIsVisible(true)
-      }, 350)
-    }, 0)
+      })
+    })
   }, [categoryId])
 
-  // Animation d'entrée au premier montage
+  // Animation d'entrée au premier montage - réduit pour améliorer LCP
   useEffect(() => {
-    setTimeout(() => {
+    // Utiliser requestAnimationFrame pour un rendu immédiat
+    requestAnimationFrame(() => {
       setIsVisible(true)
-    }, 300)
+    })
   }, [])
 
   // Rayon du cercle (en pixels)
@@ -383,11 +395,21 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
                   {/* Image ou emoji */}
                   <div className="h-48 rounded-lg overflow-hidden flex items-center justify-center mb-2 bg-gray-50">
                     {imageData.type === 'image' ? (
-                      <img 
-                        src={imageData.value}
-                        alt={item.name}
-                        className="w-full h-full object-cover"
-                      />
+                      <picture>
+                        <source 
+                          srcSet={`${optimizeImageUrl(imageData.value, 300)} 300w, ${optimizeImageUrl(imageData.value, 400)} 400w`}
+                          type="image/webp"
+                          sizes="(max-width: 768px) 300px, 400px"
+                        />
+                        <img 
+                          src={optimizeImageUrl(imageData.value, 300)}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                          width="300"
+                          height="400"
+                        />
+                      </picture>
                     ) : (
                       <span className="text-4xl">{imageData.value}</span>
                     )}
@@ -470,11 +492,35 @@ function Carte() {
     }
   }, [selectedRestaurantId])
 
+  // Fonction helper pour optimiser les URLs Unsplash
+  const optimizeImageUrl = (url, width = 400) => {
+    if (!url || typeof url !== 'string') return url
+    
+    // Si c'est une URL Unsplash, optimiser avec WebP et dimensions
+    if (url.includes('unsplash.com')) {
+      try {
+        const urlObj = new URL(url)
+        // Extraire l'ID de l'image (ex: photo-1626087925096-788c3e0c0a7e)
+        const pathParts = urlObj.pathname.split('/').filter(p => p)
+        const imageId = pathParts[pathParts.length - 1] || pathParts[0]
+        
+        // Construire une URL optimisée avec WebP
+        // Utiliser des dimensions responsives et format WebP pour meilleure compression
+        return `https://images.unsplash.com/${imageId}?w=${width}&q=80&fm=webp&auto=format&fit=crop`
+      } catch (e) {
+        // Si l'URL n'est pas valide, retourner l'originale
+        return url
+      }
+    }
+    
+    return url
+  }
+
   // Récupérer l'image depuis le JSON ou utiliser un fallback
   const getItemImage = (item, categoryId) => {
-    // Si l'item a une image dans le JSON, l'utiliser
+    // Si l'item a une image dans le JSON, l'optimiser
     if (item.image) {
-      return { type: 'image', value: item.image }
+      return { type: 'image', value: optimizeImageUrl(item.image, 400) }
     }
     
     // Fallback par catégorie si pas d'image
@@ -603,7 +649,7 @@ function Carte() {
   return (
     <section className="flex flex-col overflow-x-hidden md:overflow-y-auto overflow-y-hidden">
       <div className="mx-auto max-w-7xl w-full flex flex-col h-[90%] md:h-auto lg:h-auto">
-        {/* Sélecteur de catégorie */}
+        {/* Sélecteur de catégorie - LCP element, s'affiche immédiatement */}
         <div className="bg-black/80 h-[7%] lg:h-auto backdrop-blur-sm py-4 lg:py-6 -mx-4 md:-mx-6 lg:mx-0 px-4 md:px-6 lg:px-8 shrink-0">
           <div className="overflow-x-auto scrollbar-hide lg:overflow-visible">
             <div className="flex space-x-2 min-w-max md:min-w-0 md:justify-center lg:justify-center px-2 lg:px-0">
@@ -613,7 +659,7 @@ function Carte() {
                   onClick={() => {
                     setActiveCategory(category.id)
                   }}
-                  className={`px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base whitespace-nowrap transition-background duration-600 rounded-lg ${
+                  className={`px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base whitespace-nowrap transition-background duration-300 rounded-lg ${
                     activeCategory === category.id
                       ? 'text-white bg-red-600'
                       : 'text-white bg-black hover:bg-gray-900'

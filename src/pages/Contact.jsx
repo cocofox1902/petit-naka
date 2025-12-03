@@ -17,12 +17,16 @@ function Contact() {
           <div className="w-24 h-1 bg-red-600 mx-auto"></div>
         </div>
 
-        {/* Image de localisation */}
+        {/* Image de localisation - LCP image, chargée immédiatement */}
         <div className="mb-12 lg:mb-16 rounded-lg overflow-hidden shadow-2xl">
-          <LazyImage 
+          <img 
             src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&q=80" 
             alt="Localisation restaurant"
             className="w-full h-64 md:h-96 lg:h-[500px] object-cover transition-all duration-700 hover:scale-110"
+            fetchPriority="high"
+            loading="eager"
+            width="1200"
+            height="500"
           />
         </div>
 
