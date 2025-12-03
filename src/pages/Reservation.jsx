@@ -37,11 +37,11 @@ function Reservation() {
       <div className="mx-auto px-4 md:px-6 lg:px-8 max-w-4xl lg:max-w-5xl">
         <div className="text-center mb-8 lg:mb-12">
           <h2 id="reservation-heading" className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 lg:mb-6">Réservation</h2>
-          <p className="text-gray-400 text-lg lg:text-xl">
+          <p className="text-gray-300 text-lg lg:text-xl">
             Réservez une table en ligne ou par téléphone au{' '}
             <a 
               href={`tel:${selectedRestaurant.phone.replace(/\s/g, '')}`}
-              className="text-red-600 font-bold hover:text-red-500 transition-colors"
+              className="text-red-400 font-bold hover:text-red-300 transition-colors underline"
               aria-label={`Appeler pour réserver au ${selectedRestaurant.phone}`}
             >
               {selectedRestaurant.phone}
@@ -130,42 +130,50 @@ function Reservation() {
               </button>
             </div>
 
-            {/* Jours de la semaine */}
-            <div className="grid grid-cols-7 gap-1 mb-2" role="row">
-              {weekDays.map((day, index) => (
-                <div key={index} className="text-center text-xs font-medium text-gray-600 py-2" role="columnheader">
-                  {day}
-                </div>
-              ))}
-            </div>
+            {/* Calendrier avec structure ARIA correcte */}
+            <div role="table" aria-labelledby="calendar-month">
+              {/* En-têtes des jours de la semaine */}
+              <div role="row" className="grid grid-cols-7 gap-1 mb-2">
+                {weekDays.map((day, index) => (
+                  <div key={index} className="text-center text-xs font-medium text-gray-600 py-2" role="columnheader">
+                    {day}
+                  </div>
+                ))}
+              </div>
 
-            {/* Grille du calendrier */}
-            <div className="grid grid-cols-7 gap-1" role="grid" aria-labelledby="calendar-month">
-              {calendarDays.map((day, index) => (
-                <div key={index} className="aspect-square flex items-center justify-center">
-                  {day ? (
-                    <button 
-                      className="w-full h-full text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2"
-                      disabled
-                      aria-label={`Sélectionner le ${day} novembre 2025`}
-                      aria-disabled="true"
-                    >
-                      {day}
-                    </button>
-                  ) : (
-                    <div className="w-full h-full" aria-hidden="true"></div>
-                  )}
-                </div>
-              ))}
+              {/* Grille du calendrier - organisée en lignes */}
+              {Array.from({ length: Math.ceil(calendarDays.length / 7) }).map((_, rowIndex) => {
+                const rowDays = calendarDays.slice(rowIndex * 7, (rowIndex + 1) * 7)
+                return (
+                  <div key={rowIndex} role="row" className="grid grid-cols-7 gap-1">
+                    {rowDays.map((day, cellIndex) => (
+                      <div key={cellIndex} role="cell" className="aspect-square flex items-center justify-center">
+                        {day ? (
+                          <button 
+                            className="w-full h-full text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2"
+                            disabled
+                            aria-label={`Sélectionner le ${day} novembre 2025`}
+                            aria-disabled="true"
+                          >
+                            {day}
+                          </button>
+                        ) : (
+                          <div className="w-full h-full" aria-hidden="true"></div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )
+              })}
             </div>
           </div>
 
           {/* Note de contact */}
           <div className="mt-8 text-center border-t border-gray-200 pt-6" role="region" aria-label="Contact téléphonique">
-            <p className="text-gray-400 text-sm mb-3">Ou appelez-nous directement</p>
+            <p className="text-gray-600 text-sm mb-3">Ou appelez-nous directement</p>
             <a 
               href={`tel:${selectedRestaurant.phone.replace(/\s/g, '')}`}
-              className="text-red-600 font-bold text-xl transition-all duration-300 hover:text-red-500 hover:scale-110 inline-block focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 rounded"
+              className="text-red-600 font-bold text-xl transition-all duration-300 hover:text-red-700 hover:scale-110 inline-block focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 rounded underline"
               aria-label={`Appeler pour réserver au ${selectedRestaurant.phone}`}
             >
               {selectedRestaurant.phone}

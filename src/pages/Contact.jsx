@@ -42,7 +42,7 @@ function Contact() {
                 <p className="text-lg lg:text-xl transition-all duration-300 hover:text-white">{selectedRestaurant.postalCode} {selectedRestaurant.city}</p>
                 <a 
                   href={`tel:${selectedRestaurant.phone.replace(/\s/g, '')}`}
-                  className="block text-red-600 font-bold text-xl lg:text-2xl mt-6 lg:mt-8 transition-all duration-300 hover:text-red-500 hover:scale-105"
+                  className="block text-red-400 font-bold text-xl lg:text-2xl mt-6 lg:mt-8 transition-all duration-300 hover:text-red-300 hover:scale-105"
                   aria-label={`Appeler le restaurant au ${selectedRestaurant.phone}`}
                 >
                   {selectedRestaurant.phone}
@@ -53,10 +53,11 @@ function Contact() {
               href={selectedRestaurant.googleMapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center text-red-600 text-sm lg:text-base font-medium transition-all duration-300 hover:text-red-500 hover:scale-105"
+              className="inline-flex items-center text-red-400 text-sm lg:text-base font-medium transition-all duration-300 hover:text-red-300 hover:scale-105 underline"
+              aria-label="Voir l'itinéraire sur Google Maps"
             >
               Voir l'itinéraire
-              <svg className="w-5 h-5 lg:w-6 lg:h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 lg:w-6 lg:h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </a>
@@ -84,7 +85,7 @@ function Contact() {
         <div className="mt-12 lg:mt-16 bg-gray-800 rounded-lg p-6 md:p-8 lg:p-10 border border-gray-700/50 hover:border-red-600/50 transition-all duration-300">
           <h3 className="text-white font-bold text-xl lg:text-2xl mb-4 lg:mb-6 text-center">Nous contacter</h3>
           <p className="text-gray-400 text-center mb-4 lg:mb-6 text-base lg:text-lg">
-            Vous pouvez également nous contacter au <br /><a href={`tel:${selectedRestaurant.phone.replace(/\s/g, '')}`} className="text-red-600 font-bold hover:text-red-500 transition-all duration-300 text-lg lg:text-xl">{selectedRestaurant.phone}</a>
+            Vous pouvez également nous contacter au <br /><a href={`tel:${selectedRestaurant.phone.replace(/\s/g, '')}`} className="text-red-400 font-bold hover:text-red-300 transition-all duration-300 text-lg lg:text-xl underline" aria-label={`Appeler le restaurant au ${selectedRestaurant.phone}`}>{selectedRestaurant.phone}</a>
           </p>
         </div>
       </div>

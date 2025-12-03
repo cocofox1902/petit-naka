@@ -10,7 +10,7 @@ function OpeningHours({ openingHours, className = '' }) {
   }
 
   return (
-    <div className={`space-y-2 text-sm text-gray-300 ${className}`}>
+    <div className={`space-y-2 text-sm text-gray-300 ${className}`} role="table" aria-label="Horaires d'ouverture">
       {Object.entries(openingHours).map(([day, hours]) => {
         const hoursArray = Array.isArray(hours) ? hours : [hours]
         const displayHours = hoursArray.join(', ')
@@ -25,7 +25,7 @@ function OpeningHours({ openingHours, className = '' }) {
           >
             <span className="font-medium" role="rowheader">{DAY_NAMES[day]}</span>
             <span 
-              className={isClosed ? 'text-red-600 font-semibold' : ''}
+              className={isClosed ? 'text-red-400 font-semibold' : ''}
               role="cell"
               aria-label={isClosed ? 'Fermé' : displayHours}
             >

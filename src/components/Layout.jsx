@@ -274,14 +274,14 @@ function Layout({ children }) {
 
       {/* Footer - Avec animation - Caché sur la page Carte */}
       {location.pathname !== '/carte' && (
-      <footer className="bg-black text-gray-400 py-6 transition-all duration-300" role="contentinfo">
+      <footer className="bg-black text-gray-300 py-6 transition-all duration-300" role="contentinfo">
         <div className="mx-auto px-4 md:px-6 max-w-7xl">
           <div className="border-t border-gray-800 pt-8 text-center">
-            <p className="mb-2 transition-all duration-300 hover:text-white">
+            <p className="mb-2 text-gray-300 transition-all duration-300 hover:text-white">
               Petit Naka - Cuisine Japonaise authentique
             </p>
-            <p className="text-xs mb-4">© Petit Naka 2025</p>
-            <p className="text-xs text-gray-500 max-w-2xl mx-auto">
+            <p className="text-xs mb-4 text-gray-300">© Petit Naka 2025</p>
+            <p className="text-xs text-gray-300 max-w-2xl mx-auto">
               En utilisant ce site, vous acceptez notre utilisation des cookies. Nous utilisons des cookies pour vous fournir une expérience améliorée et pour optimiser le bon fonctionnement de notre site web.
             </p>
           </div>

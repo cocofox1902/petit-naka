@@ -24,7 +24,7 @@ function AEmporter() {
       <div className="mx-auto px-4 md:px-6 lg:px-8 max-w-7xl">
         <div className="text-center mb-12 lg:mb-16">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 lg:mb-6">À emporter</h2>
-          <p className="text-gray-400 text-lg lg:text-xl">Passez votre commande par téléphone</p>
+          <p className="text-gray-300 text-lg lg:text-xl">Passez votre commande par téléphone</p>
         </div>
 
         {/* Grande image de plats à emporter */}
@@ -48,7 +48,7 @@ function AEmporter() {
               <h3 className="text-white font-bold text-xl lg:text-2xl mb-2 lg:mb-4" id="phone-heading">Commande par téléphone</h3>
               <a 
                 href={`tel:${selectedRestaurant.phone.replace(/\s/g, '')}`}
-                className="text-red-600 text-2xl lg:text-3xl font-bold transition-all duration-300 hover:text-red-500 hover:scale-105 inline-block"
+                className="text-red-400 text-2xl lg:text-3xl font-bold transition-all duration-300 hover:text-red-300 hover:scale-105 inline-block underline"
                 aria-label={`Appeler pour commander au ${selectedRestaurant.phone}`}
               >
                 {selectedRestaurant.phone}
@@ -69,7 +69,7 @@ function AEmporter() {
               <div role="region" aria-labelledby="location-heading">
                 <p className="text-gray-300 text-lg lg:text-xl mb-1">{selectedRestaurant.address}</p>
                 <p className="text-gray-300 text-lg lg:text-xl mb-2">{selectedRestaurant.postalCode} {selectedRestaurant.city}</p>
-                <p className="text-gray-400 text-sm lg:text-base">Venez commander directement</p>
+                <p className="text-gray-300 text-sm lg:text-base">Venez commander directement</p>
               </div>
             </div>
           </div>
@@ -78,9 +78,7 @@ function AEmporter() {
         {/* Horaires */}
         <div className="bg-gray-800 rounded-lg p-6 md:p-8 lg:p-10 mb-8 lg:mb-12 border border-gray-700/50 hover:border-red-600/50 transition-all duration-300">
           <h3 className="text-white font-bold text-xl lg:text-2xl mb-6 lg:mb-8" id="opening-hours-heading">Heures d'ouverture</h3>
-          <div role="region" aria-labelledby="opening-hours-heading">
-            <OpeningHours openingHours={selectedRestaurant.openingHours} />
-          </div>
+          <OpeningHours openingHours={selectedRestaurant.openingHours} />
         </div>
 
         <div className="text-center">

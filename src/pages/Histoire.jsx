@@ -66,7 +66,7 @@ function Histoire() {
         <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
           <article className="bg-gray-800 rounded-lg p-6 lg:p-8 border border-gray-700/50 hover:border-red-600/50 transition-all duration-300" aria-labelledby="philosophy-heading">
             <h3 id="philosophy-heading" className="text-white font-bold text-xl lg:text-2xl mb-4 lg:mb-6">Notre Philosophie</h3>
-            <p className="text-gray-400 text-sm lg:text-base leading-relaxed">
+            <p className="text-gray-300 text-sm lg:text-base leading-relaxed">
               Authenticité, fraîcheur et respect des traditions japonaises sont les valeurs qui guident 
               notre cuisine au quotidien. Chaque ingrédient est sélectionné avec soin pour garantir 
               une expérience gustative exceptionnelle.
@@ -74,7 +74,7 @@ function Histoire() {
           </article>
           <article className="bg-gray-800 rounded-lg p-6 lg:p-8 border border-gray-700/50 hover:border-red-600/50 transition-all duration-300" aria-labelledby="commitments-heading">
             <h3 id="commitments-heading" className="text-white font-bold text-xl lg:text-2xl mb-4 lg:mb-6">Nos Engagements</h3>
-            <p className="text-gray-400 text-sm lg:text-base leading-relaxed">
+            <p className="text-gray-300 text-sm lg:text-base leading-relaxed">
               Des ingrédients de qualité, une préparation soignée et un service chaleureux pour 
               votre plus grand plaisir. Nous sommes fiers de vous accueillir dans notre restaurant 
               pour une expérience authentique et mémorable.
