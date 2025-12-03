@@ -1,10 +1,8 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Environment } from '@react-three/drei'
 import { useRestaurant } from '../contexts/RestaurantContext'
 import { usePageTransition } from '../contexts/PageTransitionContext'
-import Model3D from '../components/Model3D'
+import Canvas3D from '../components/Canvas3D'
 
 // Composant Carrousel de plats
 function DishCarousel() {
@@ -305,17 +303,13 @@ function Home() {
         style={{ height: '80vh', minHeight: '500px' }}
       >
         <div className="w-full h-full absolute inset-0 pointer-events-none">
-          <Canvas
-            camera={{ position: [0, 0, 5], fov: 50 }}
-            gl={{ alpha: true, antialias: true, preserveDrawingBuffer: true }}
-            style={{ background: 'transparent', pointerEvents: 'none' }}
-          >
-            <ambientLight intensity={1} />
-            <directionalLight position={[10, 10, 5]} intensity={1.5} />
-            <pointLight position={[-10, -10, -5]} intensity={0.8} />
-            <Model3D key={`${location.pathname}-${modelKey}`} rotation={rotation} translateY={translateY} scale={scale} />
-            <OrbitControls enabled={false} />
-          </Canvas>
+          <Canvas3D
+            rotation={rotation}
+            translateY={translateY}
+            scale={scale}
+            modelKey={modelKey}
+            locationPathname={location.pathname}
+          />
         </div>
         
         {/* Flèche animée en bas */}

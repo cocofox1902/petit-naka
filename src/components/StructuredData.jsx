@@ -138,7 +138,7 @@ function StructuredData() {
         '@context': 'https://schema.org',
         '@type': 'FoodEstablishment',
         'name': selectedRestaurant.name,
-        'image': `${BASE_URL}/logo.png`,
+        'image': `${BASE_URL}/logo.webp`,
         'address': {
           '@type': 'PostalAddress',
           'streetAddress': selectedRestaurant.address,

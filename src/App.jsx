@@ -7,8 +7,10 @@ import Layout from './components/Layout'
 import ScrollToTop from './components/ScrollToTop'
 import PageTransition from './components/PageTransition'
 import RestaurantModal from './components/RestaurantModal'
-import SEOHead from './components/SEOHead'
-import StructuredData from './components/StructuredData'
+
+// Lazy load SEO components pour réduire le bundle initial
+const SEOHead = lazy(() => import('./components/SEOHead'))
+const StructuredData = lazy(() => import('./components/StructuredData'))
 
 // Code splitting - Chargement paresseux des pages
 const Home = lazy(() => import('./pages/Home'))
@@ -36,8 +38,10 @@ function App() {
       <RestaurantProvider>
         <PageTransitionProvider>
           <Router>
-            <SEOHead />
-            <StructuredData />
+            <Suspense fallback={null}>
+              <SEOHead />
+              <StructuredData />
+            </Suspense>
             <ScrollToTop />
             <PageTransition>
               <RestaurantModal />

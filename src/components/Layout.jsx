@@ -1,7 +1,8 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { usePageTransition } from '../contexts/PageTransitionContext'
-import logo from '../assets/images/logo.png'
+import logo from '../assets/images/logo-optimized.png'
+import logoWebp from '../assets/images/logo.webp'
 
 function Layout({ children }) {
   const location = useLocation()
@@ -90,11 +91,17 @@ function Layout({ children }) {
               aria-label="Retour à l'accueil - Petit Naka"
               aria-disabled={isMenuOpen}
             >
-              <img 
-                src={logo} 
-                alt="Petit Naka - Logo" 
-                className="h-12 w-12 md:h-16 md:w-16 lg:h-20 lg:w-20 object-contain max-w-full max-h-full"
-              />
+              <picture>
+                <source srcSet={logoWebp} type="image/webp" />
+                <img 
+                  src={logo} 
+                  alt="Petit Naka - Logo" 
+                  className="h-12 w-12 md:h-16 md:w-16 lg:h-20 lg:w-20 object-contain max-w-full max-h-full"
+                  width="512"
+                  height="477"
+                  loading="eager"
+                />
+              </picture>
             </Link>
             
             {/* Desktop Navigation */}

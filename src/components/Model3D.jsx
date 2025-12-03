@@ -1,7 +1,8 @@
 import { useRef, useEffect, useState } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import * as THREE from 'three'
+// Imports optimisés de Three.js - seulement ce qui est nécessaire
+import { MathUtils, Vector3, Box3 } from 'three'
 import modelPath from '../assets/models/ramen.glb'
 
 function Model3D({ rotation, translateY, scale }) {
@@ -47,9 +48,9 @@ function Model3D({ rotation, translateY, scale }) {
       // Réinitialiser initialValuesRef à null pour forcer le recalcul
       initialValuesRef.current = null
       
-      const box = new THREE.Box3().setFromObject(clonedScene)
-      const center = box.getCenter(new THREE.Vector3())
-      const size = box.getSize(new THREE.Vector3())
+      const box = new Box3().setFromObject(clonedScene)
+      const center = box.getCenter(new Vector3())
+      const size = box.getSize(new Vector3())
       
       // Calculer le scale de base
       const maxDim = Math.max(size.x, size.y, size.z)
@@ -86,7 +87,7 @@ function Model3D({ rotation, translateY, scale }) {
             initialValuesRef.current.initialZ
           )
           // Rotation initiale de 90° sur l'axe X pour corriger l'orientation du bol
-          modelRef.current.rotation.set(THREE.MathUtils.degToRad(-70), 0, 0)
+          modelRef.current.rotation.set(MathUtils.degToRad(-70), 0, 0)
           modelRef.current.scale.set(
             initialValuesRef.current.baseScale,
             initialValuesRef.current.baseScale,
@@ -113,9 +114,9 @@ function Model3D({ rotation, translateY, scale }) {
   useFrame(() => {
     if (modelRef.current && clonedScene && initialValuesRef.current) {
       // Rotation initiale fixe sur X + rotation Z du scroll (au lieu de Y)
-      modelRef.current.rotation.x = THREE.MathUtils.degToRad(-70)
+      modelRef.current.rotation.x = MathUtils.degToRad(-70)
       modelRef.current.rotation.y = 0
-      modelRef.current.rotation.z = THREE.MathUtils.degToRad(rotation)
+      modelRef.current.rotation.z = MathUtils.degToRad(rotation)
       
       // Appliquer la translation : partir de la position Y initiale et descendre progressivement
       modelRef.current.position.x = initialValuesRef.current.initialX
@@ -165,7 +166,8 @@ function Model3D({ rotation, translateY, scale }) {
   )
 }
 
-// Précharger le modèle
-useGLTF.preload(modelPath)
+// Ne PAS précharger le modèle pour réduire le bundle initial
+// Le modèle sera chargé à la demande quand le composant est monté
+// useGLTF.preload(modelPath) // Désactivé pour améliorer les performances
 
 export default Model3D

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { usePageTransition } from '../contexts/PageTransitionContext'
-import logo from '../assets/images/logo.png'
+import logo from '../assets/images/logo-optimized.png'
+import logoWebp from '../assets/images/logo.webp'
 
 function PageTransition({ children }) {
   const location = useLocation()
@@ -105,13 +106,19 @@ function PageTransition({ children }) {
           className="fixed inset-0 bg-black z-[100] flex items-center justify-center transition-opacity duration-1000"
           style={{ opacity: logoContainerFade ? 0 : 1 }}
         >
-          <img 
-            src={logo} 
-            alt="Petit Naka" 
-            className={`w-64 h-64 md:w-96 md:h-96 object-contain ${
-              logoPhase === 'entrance' ? 'animate-logoEntrance' : 'animate-logoExit'
-            }`}
-          />
+          <picture>
+            <source srcSet={logoWebp} type="image/webp" />
+            <img 
+              src={logo} 
+              alt="Petit Naka" 
+              className={`w-64 h-64 md:w-96 md:h-96 object-contain ${
+                logoPhase === 'entrance' ? 'animate-logoEntrance' : 'animate-logoExit'
+              }`}
+              width="512"
+              height="477"
+              loading="eager"
+            />
+          </picture>
         </div>
       )}
 

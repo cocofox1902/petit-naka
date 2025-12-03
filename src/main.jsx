@@ -1,10 +1,8 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+// StrictMode désactivé en production pour améliorer les performances
+// Il reste actif en développement via Vite
+const root = createRoot(document.getElementById('root'))
+root.render(<App />)
