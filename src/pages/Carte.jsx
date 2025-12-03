@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useRestaurant } from '../contexts/RestaurantContext'
 import menuData from '../data/menu.json'
+import { validateMenuData } from '../utils/validation'
 
 // Composant pour la barre parallax sous les titres
 function ParallaxBar() {
@@ -121,14 +122,14 @@ function MenuItem({ item, imageData, isVisible = true }) {
   return (
     <div 
       ref={itemRef}
-      className={`flex flex-col bg-white p-4 md:p-6 rounded-xl m-4 w-[80%] transition-all duration-700 ${
+      className={`flex flex-col bg-white p-4 md:p-6 lg:p-6 rounded-xl m-4 md:m-0 lg:m-0 w-[80%] md:w-full lg:w-full transition-all duration-700 hover:shadow-xl hover:scale-105 ${
         hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
     >
       {/* Carte blanche avec bordure */}
       <div className="flex flex-col items-center">
         {/* Image ou emoji */}
-        <div className="h-48 md:h-64 rounded-lg overflow-hidden flex items-center justify-center mb-4 bg-gray-50">
+        <div className="h-48 md:h-56 lg:h-64 w-full rounded-lg overflow-hidden flex items-center justify-center mb-4 bg-gray-50">
           {imageData.type === 'image' ? (
             <img 
               src={imageData.value}
@@ -136,34 +137,34 @@ function MenuItem({ item, imageData, isVisible = true }) {
               className="w-full h-full object-cover"
             />
           ) : (
-            <span className="text-6xl md:text-8xl">{imageData.value}</span>
+            <span className="text-6xl md:text-7xl lg:text-8xl">{imageData.value}</span>
           )}
         </div>
 
         {/* Nom du plat */}
-        <h4 className="text-black font-bold text-xl mb-2 text-center">
+        <h4 className="text-black font-bold text-xl lg:text-2xl mb-2 text-center">
           {item.name}
         </h4>
 
         {/* Description */}
         {item.description && (
-          <p className="text-gray-700 text-lg text-center mb-2">
+          <p className="text-gray-700 text-base lg:text-lg text-center mb-2">
             {item.description}
           </p>
         )}
 
         {/* Note */}
         {item.note && (
-          <p className="text-amber-600 text-xs md:text-sm italic text-center">
+          <p className="text-amber-600 text-xs md:text-sm lg:text-base italic text-center">
             {item.note}
           </p>
         )}
       </div>
 
       {/* Bouton prix en dessous */}
-      <div className="mt-2">
-        <div className="bg-amber-800 hover:bg-amber-900 rounded-3xl py-3 px-6 text-center transition-colors duration-30 w-[50%] mx-auto">
-          <span className="text-white font-bold text-2xl">
+      <div className="mt-auto">
+        <div className="bg-amber-800 hover:bg-amber-900 rounded-3xl py-3 px-6 lg:py-4 lg:px-8 text-center transition-colors duration-300 w-[50%] md:w-[60%] lg:w-[70%] mx-auto">
+          <span className="text-white font-bold text-xl lg:text-2xl">
             {item.price.toFixed(2)}€
           </span>
         </div>
@@ -443,12 +444,30 @@ function Carte() {
     }
   }, [searchParams, restaurants, selectRestaurant, setSearchParams])
 
-  // Récupérer le menu du restaurant sélectionné
+  // Récupérer le menu du restaurant sélectionné avec validation
   const currentMenuData = useMemo(() => {
-    if (!selectedRestaurantId || !menuData[selectedRestaurantId]) {
+    if (!selectedRestaurantId) {
       return {}
     }
-    return menuData[selectedRestaurantId]
+    
+    try {
+      // Valider les données du menu
+      if (!validateMenuData(menuData)) {
+        if (import.meta.env.DEV) {
+          console.error('Carte: Structure des données de menu invalide')
+        }
+        return {}
+      }
+      
+      if (!menuData[selectedRestaurantId]) {
+        return {}
+      }
+      
+      return menuData[selectedRestaurantId]
+    } catch {
+      // Erreur silencieuse en production
+      return {}
+    }
   }, [selectedRestaurantId])
 
   // Récupérer l'image depuis le JSON ou utiliser un fallback
@@ -500,8 +519,11 @@ function Carte() {
     }))
   }, [currentMenuData])
 
-  // Scroller vers le haut puis désactiver le scroll sur la page
+  // Scroller vers le haut puis désactiver le scroll sur la page (uniquement sur mobile)
   useEffect(() => {
+    // Fonction pour vérifier si on est sur mobile
+    const isMobile = () => window.innerWidth < 768 // md breakpoint
+    
     // Fonction pour forcer le scroll vers le haut
     const scrollToTop = () => {
       window.scrollTo({
@@ -520,30 +542,53 @@ function Carte() {
     // Scroller immédiatement
     scrollToTop()
     
-    // Scroller plusieurs fois pour s'assurer que ça fonctionne sur mobile
-    setTimeout(scrollToTop, 0)
-    setTimeout(scrollToTop, 50)
-    setTimeout(scrollToTop, 100)
-    setTimeout(scrollToTop, 200)
-    
-    // Désactiver le scroll après un délai pour s'assurer que le scroll est terminé
-    setTimeout(() => {
+    // Si on est sur mobile, désactiver le scroll
+    if (isMobile()) {
+      // Scroller plusieurs fois pour s'assurer que ça fonctionne sur mobile
+      setTimeout(scrollToTop, 0)
+      setTimeout(scrollToTop, 50)
+      setTimeout(scrollToTop, 100)
+      setTimeout(scrollToTop, 200)
+      
+      // Désactiver le scroll après un délai pour s'assurer que le scroll est terminé
+      setTimeout(() => {
+        scrollToTop()
+        document.body.style.overflow = 'hidden'
+        document.body.style.overflowY = 'hidden'
+        document.body.style.position = 'fixed'
+        document.body.style.width = '100%'
+        document.documentElement.style.overflow = 'hidden'
+        document.documentElement.style.overflowY = 'hidden'
+      }, 300)
+    } else {
+      // Sur tablette/desktop, juste scroller vers le haut et laisser le scroll actif
       scrollToTop()
-      document.body.style.overflow = 'hidden'
-      document.body.style.overflowY = 'hidden'
-      document.body.style.position = 'fixed'
-      document.body.style.width = '100%'
-      document.documentElement.style.overflow = 'hidden'
-      document.documentElement.style.overflowY = 'hidden'
-    }, 300)
+    }
+    
+    // Gérer le resize pour réactiver le scroll si on passe en mode desktop
+    const handleResize = () => {
+      if (!isMobile()) {
+        // Réactiver le scroll si on est sur tablette/desktop
+        document.body.style.overflow = ''
+        document.body.style.overflowY = ''
+        document.body.style.position = ''
+        document.body.style.width = ''
+        document.documentElement.style.overflow = ''
+        document.documentElement.style.overflowY = ''
+      }
+    }
+    
+    window.addEventListener('resize', handleResize)
     
     return () => {
+      // Nettoyer les styles
       document.body.style.overflow = ''
       document.body.style.overflowY = ''
       document.body.style.position = ''
       document.body.style.width = ''
       document.documentElement.style.overflow = ''
       document.documentElement.style.overflowY = ''
+      window.removeEventListener('resize', handleResize)
     }
   }, [])
 
@@ -556,19 +601,19 @@ function Carte() {
   }
 
   return (
-    <section className="flex flex-col overflow-x-hidden overflow-y-hidden">
-      <div className="mx-auto max-w-7xl w-full flex flex-col h-[90%]">
+    <section className="flex flex-col overflow-x-hidden md:overflow-y-auto overflow-y-hidden">
+      <div className="mx-auto max-w-7xl w-full flex flex-col h-[90%] md:h-auto lg:h-auto">
         {/* Sélecteur de catégorie */}
-        <div className="bg-black/80 h-[7%] backdrop-blur-sm py-4 -mx-4 md:-mx-6 px-4 md:px-6 shrink-0">
-          <div className="overflow-x-auto scrollbar-hide">
-            <div className="flex space-x-2 min-w-max md:min-w-0 md:justify-center px-2">
+        <div className="bg-black/80 h-[7%] lg:h-auto backdrop-blur-sm py-4 lg:py-6 -mx-4 md:-mx-6 lg:mx-0 px-4 md:px-6 lg:px-8 shrink-0">
+          <div className="overflow-x-auto scrollbar-hide lg:overflow-visible">
+            <div className="flex space-x-2 min-w-max md:min-w-0 md:justify-center lg:justify-center px-2 lg:px-0">
               {categories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => {
                     setActiveCategory(category.id)
                   }}
-                  className={`px-4 py-2 text-sm whitespace-nowrap transition-background duration-600 rounded-lg ${
+                  className={`px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base whitespace-nowrap transition-background duration-600 rounded-lg ${
                     activeCategory === category.id
                       ? 'text-white bg-red-600'
                       : 'text-white bg-black hover:bg-gray-900'
@@ -581,8 +626,8 @@ function Carte() {
           </div>
         </div>
 
-        {/* Carrousel cercle - prend toute la hauteur restante */}
-        <div className="h-[80vh]">
+        {/* Carrousel circulaire uniquement sur mobile */}
+        <div className="h-[80vh] md:hidden">
           {(() => {
             const activeCategoryData = categories.find(cat => cat.id === activeCategory)
             return activeCategoryData ? (
@@ -592,6 +637,33 @@ function Carte() {
                 categoryId={activeCategory}
               />
             ) : null
+          })()}
+        </div>
+
+        {/* Grille sur tablette et desktop */}
+        <div className="hidden md:block lg:h-auto">
+          {(() => {
+            const activeCategoryData = categories.find(cat => cat.id === activeCategory)
+            if (!activeCategoryData) return null
+            
+            // Sur desktop, afficher en grille
+            return (
+              <div className="py-8 lg:py-12 px-4 lg:px-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+                  {activeCategoryData.data.map((item, index) => {
+                    const imageData = getItemImage(item, activeCategory)
+                    return (
+                      <MenuItem 
+                        key={`${item.name}-${index}`}
+                        item={item}
+                        imageData={imageData}
+                        isVisible={true}
+                      />
+                    )
+                  })}
+                </div>
+              </div>
+            )
           })()}
         </div>
       </div>

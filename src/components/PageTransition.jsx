@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+import { usePageTransition } from '../contexts/PageTransitionContext'
 import logo from '../assets/images/logo.png'
 
 function PageTransition({ children }) {
+  const location = useLocation()
+  const { isTransitioning, endTransition } = usePageTransition()
   const [showLogo, setShowLogo] = useState(false)
   const [showContent, setShowContent] = useState(true)
   const [logoPhase, setLogoPhase] = useState('entrance')
   const [logoContainerFade, setLogoContainerFade] = useState(false)
+  const [isInitialLoad, setIsInitialLoad] = useState(true)
 
+  // Animation au premier chargement ou rechargement
   useEffect(() => {
     // Vérifier si c'est un rechargement de page
     const navigationEntry = performance.getEntriesByType('navigation')[0]
@@ -42,6 +48,7 @@ function PageTransition({ children }) {
       // Phase 2 : Logo disparaît lentement (opacité 1->0, scale 1.3->1)
       const timer2 = setTimeout(() => {
         setShowLogo(false)
+        setIsInitialLoad(false)
       }, 2000) // Après 2 secondes au total (1s entrance + 1s exit), cacher le logo
 
       return () => {
@@ -52,8 +59,43 @@ function PageTransition({ children }) {
       // Pas d'animation, afficher le contenu directement
       setShowLogo(false)
       setShowContent(true)
+      setIsInitialLoad(false)
     }
   }, [])
+
+  // Animation lors des changements de page (hors navbar)
+  useEffect(() => {
+    // Ne pas déclencher l'animation au premier chargement
+    if (isInitialLoad) return
+
+    // Si une transition est en cours
+    if (isTransitioning) {
+      // Cacher le contenu
+      setShowContent(false)
+      // Afficher le logo
+      setShowLogo(true)
+      setLogoPhase('entrance')
+      setLogoContainerFade(false)
+
+      // Phase 1 : Logo apparaît
+      const timer1 = setTimeout(() => {
+        setLogoPhase('exit')
+        setShowContent(true)
+        setLogoContainerFade(true)
+      }, 800) // Plus rapide pour les transitions entre pages
+
+      // Phase 2 : Logo disparaît
+      const timer2 = setTimeout(() => {
+        setShowLogo(false)
+        endTransition()
+      }, 1600) // 800ms entrance + 800ms exit
+
+      return () => {
+        clearTimeout(timer1)
+        clearTimeout(timer2)
+      }
+    }
+  }, [location.pathname, isTransitioning, isInitialLoad, endTransition])
 
   return (
     <>

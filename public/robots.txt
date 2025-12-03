@@ -1,0 +1,12 @@
+# robots.txt pour Petit Naka
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://petit-naka.netlify.app/sitemap.xml
+
+# Désactiver l'indexation des fichiers de développement (si présents)
+Disallow: /src/
+Disallow: /node_modules/
+

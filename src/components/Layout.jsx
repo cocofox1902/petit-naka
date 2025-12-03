@@ -1,9 +1,11 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { usePageTransition } from '../contexts/PageTransitionContext'
 import logo from '../assets/images/logo.png'
 
 function Layout({ children }) {
   const location = useLocation()
+  const { startTransition } = usePageTransition()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
@@ -70,67 +72,84 @@ function Layout({ children }) {
   return (
     <div className="min-h-screen bg-black">
       {/* Header - Avec animations */}
-      <header className="fixed top-0 left-0 right-0 bg-transparent z-50 transition-all duration-300">
-        <nav className="mx-auto px-4 md:px-6 max-w-7xl bg-black/50">
-          <div className="flex justify-between items-center h-20">
+      <header className="fixed top-0 left-0 right-0 bg-transparent z-50 transition-all duration-300" role="banner">
+        <nav className="mx-auto px-4 md:px-6 max-w-7xl bg-black/50" aria-label="Navigation principale">
+          <div className="flex justify-between items-center h-20 overflow-hidden">
             <Link 
               to="/" 
-              className="flex items-center gap-2 transition-all duration-300 hover:scale-110 z-50"
+              onClick={(e) => {
+                if (isMenuOpen) {
+                  e.preventDefault()
+                  return
+                }
+                startTransition()
+              }}
+              className={`flex items-center gap-2 transition-all duration-300 z-50 flex-shrink-0 ${
+                isMenuOpen ? 'pointer-events-none' : 'hover:scale-110'
+              }`}
+              aria-label="Retour à l'accueil - Petit Naka"
+              aria-disabled={isMenuOpen}
             >
               <img 
                 src={logo} 
-                alt="Petit Naka" 
-                className="h-16 w-16 md:h-24 md:w-24 object-cover"
+                alt="Petit Naka - Logo" 
+                className="h-12 w-12 md:h-16 md:w-16 lg:h-20 lg:w-20 object-contain max-w-full max-h-full"
               />
             </Link>
             
             {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-6 relative z-50">
+            <div className="hidden md:flex space-x-6 relative z-50" role="navigation" aria-label="Menu principal">
               <Link
                 to="/"
-                className={`text-sm transition-all duration-300 ${
+                className={`text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-black rounded ${
                   isActive('/') ? 'text-red-600' : 'text-gray-400 hover:text-white hover:scale-110'
                 }`}
+                aria-current={isActive('/') ? 'page' : undefined}
               >
                 Home
               </Link>
               <Link
                 to="/carte"
-                className={`text-sm transition-all duration-300 ${
+                className={`text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-black rounded ${
                   isActive('/carte') ? 'text-red-600' : 'text-gray-400 hover:text-white hover:scale-110'
                 }`}
+                aria-current={isActive('/carte') ? 'page' : undefined}
               >
                 Carte
               </Link>
               <Link
                 to="/a-emporter"
-                className={`text-sm transition-all duration-300 ${
+                className={`text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-black rounded ${
                   isActive('/a-emporter') ? 'text-red-600' : 'text-gray-400 hover:text-white hover:scale-110'
                 }`}
+                aria-current={isActive('/a-emporter') ? 'page' : undefined}
               >
                 À emporter
               </Link>
               <Link
                 to="/reservation"
-                className={`text-sm transition-all duration-300 ${
+                className={`text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-black rounded ${
                   isActive('/reservation') ? 'text-red-600' : 'text-gray-400 hover:text-white hover:scale-110'
                 }`}
+                aria-current={isActive('/reservation') ? 'page' : undefined}
               >
                 Réservation
               </Link>
               <Link
                 to="/histoire"
-                className={`text-sm transition-all duration-300 ${
+                className={`text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-black rounded ${
                   isActive('/histoire') ? 'text-red-600' : 'text-gray-400 hover:text-white hover:scale-110'
                 }`}
+                aria-current={isActive('/histoire') ? 'page' : undefined}
               >
                 Histoire
               </Link>
               <Link
                 to="/contact"
-                className={`text-sm transition-all duration-300 ${
+                className={`text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-black rounded ${
                   isActive('/contact') ? 'text-red-600' : 'text-gray-400 hover:text-white hover:scale-110'
                 }`}
+                aria-current={isActive('/contact') ? 'page' : undefined}
               >
                 Contact
               </Link>
@@ -154,16 +173,19 @@ function Layout({ children }) {
                     opacity: (isMenuOpen || isAnimating) ? 1 : 0,
                     pointerEvents: isMenuOpen ? 'auto' : 'none'
                   }}
+                  aria-hidden="true"
                 >
                 {/* Navigation à l'intérieur de l'overlay */}
                 {isMenuOpen && (
-                  <div 
+                  <nav 
+                    id="mobile-menu"
                     className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-4 z-50 w-full max-w-md"
                     style={{ 
                       pointerEvents: 'auto'
                     }}
+                    aria-label="Menu de navigation mobile"
                   >
-                    <div className="space-y-2 pt-4">
+                    <div className="space-y-2 pt-4" role="menu">
                       {[
                         { to: "/", name: "Home" },
                         { to: "/carte", name: "Carte" },
@@ -176,7 +198,7 @@ function Layout({ children }) {
                           key={link.to}
                           to={link.to}
                           onClick={handleMenuToggle}
-                          className={`block py-3 px-4 text-xl text-center rounded-lg transition-all duration-300 ${
+                          className={`block py-3 px-4 text-xl text-center rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-gray-600 ${
                             isActive(link.to) 
                               ? 'text-white bg-red-600 font-semibold shadow-lg' 
                               : 'text-white hover:bg-gray-700'
@@ -186,26 +208,31 @@ function Layout({ children }) {
                             transform: showLinks ? 'translateY(0)' : (isClosing ? 'translateY(-20px)' : 'translateY(20px)'),
                             transitionDelay: showLinks ? `${index * 0.1}s` : `${index * 0.1}s`
                           }}
+                          role="menuitem"
+                          aria-current={isActive(link.to) ? 'page' : undefined}
                         >
                           {link.name}
                         </Link>
                       ))}
                     </div>
-                  </div>
+                  </nav>
                 )}
                 </div>
               )}
 
               {/* Bouton hamburger */}
               <button
-                className={`relative w-10 h-10 flex flex-col justify-center items-center group rounded-full bg-gray-600 hover:bg-gray-500 border-2 border-gray-600 hover:border-gray-500 transition-all duration-300 hover:scale-110 z-50 ${
+                className={`relative w-10 h-10 flex flex-col justify-center items-center group rounded-full bg-gray-600 hover:bg-gray-500 border-2 border-gray-600 hover:border-gray-500 transition-all duration-300 hover:scale-110 z-50 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-black ${
                   isMenuOpen ? 'bg-transparent border-transparent' : ''
                 } ${
                   isButtonDisabled ? 'opacity-50 cursor-not-allowed hover:scale-100' : ''
                 }`}
                 onClick={handleMenuToggle}
                 disabled={isButtonDisabled}
-                aria-label="Menu"
+                aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+                aria-expanded={isMenuOpen}
+                aria-controls="mobile-menu"
+                aria-haspopup="true"
               >
                 {/* Barre du haut - disparaît vers le milieu (width passe à 0) */}
                 <span 
@@ -234,13 +261,13 @@ function Layout({ children }) {
       </header>
 
       {/* Main Content */}
-      <main className="pt-16">
+      <main className="pt-16" role="main">
         {children}
       </main>
 
       {/* Footer - Avec animation - Caché sur la page Carte */}
       {location.pathname !== '/carte' && (
-      <footer className="bg-black text-gray-400 py-6 transition-all duration-300">
+      <footer className="bg-black text-gray-400 py-6 transition-all duration-300" role="contentinfo">
         <div className="mx-auto px-4 md:px-6 max-w-7xl">
           <div className="border-t border-gray-800 pt-8 text-center">
             <p className="mb-2 transition-all duration-300 hover:text-white">

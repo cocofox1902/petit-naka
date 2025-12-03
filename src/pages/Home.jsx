@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Environment } from '@react-three/drei'
 import { useRestaurant } from '../contexts/RestaurantContext'
+import { usePageTransition } from '../contexts/PageTransitionContext'
 import Model3D from '../components/Model3D'
 
 // Composant Carrousel de plats
@@ -123,12 +124,11 @@ function DishCarousel() {
     : -currentIndex * 100
 
   return (
-    <div className="relative max-w-4xl mx-auto">
+    <div className="relative max-w-4xl lg:max-w-5xl mx-auto" role="region" aria-label="Carrousel de spécialités">
       {/* Carrousel */}
       <div 
         ref={carouselRef}
-        className="relative overflow-hidden rounded-lg cursor-grab active:cursor-grabbing" 
-        style={{ height: '400px' }}
+        className="relative overflow-hidden rounded-lg cursor-grab active:cursor-grabbing h-[400px] lg:h-[500px]" 
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -136,29 +136,40 @@ function DishCarousel() {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        role="group"
+        aria-roledescription="carousel"
+        aria-label="Carrousel de plats"
       >
         <div
+          id="carousel-content"
           className="flex transition-transform duration-300 ease-out"
           style={{ 
             transform: `translateX(${translateX}%)`,
             transition: isDragging ? 'none' : 'transform 0.5s ease-in-out'
           }}
+          role="list"
+          aria-live="polite"
+          aria-atomic="false"
         >
           {dishes.map((dish, index) => (
             <div
               key={index}
-              className="min-w-full relative"
-              style={{ height: '400px' }}
+              id={`slide-${index}`}
+              className="min-w-full relative h-[400px] lg:h-[500px]"
+              role="listitem"
+              aria-label={`${dish.name}: ${dish.description}`}
+              aria-hidden={index !== currentIndex}
             >
               <img
                 src={dish.image}
                 alt={dish.name}
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-8 text-center">
-                <h3 className="text-3xl font-bold text-white mb-2">{dish.name}</h3>
-                <p className="text-gray-300">{dish.description}</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" aria-hidden="true" />
+              <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-12 text-center">
+                <h3 className="text-3xl lg:text-4xl font-bold text-white mb-2">{dish.name}</h3>
+                <p className="text-gray-300 text-base lg:text-lg">{dish.description}</p>
               </div>
             </div>
           ))}
@@ -168,35 +179,41 @@ function DishCarousel() {
       {/* Boutons de navigation */}
       <button
         onClick={goToPrevious}
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 z-10"
-        aria-label="Précédent"
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 z-10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+        aria-label={`Précédent: ${dishes[(currentIndex - 1 + dishes.length) % dishes.length]?.name}`}
+        aria-controls="carousel-content"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
       </button>
       <button
         onClick={goToNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 z-10"
-        aria-label="Suivant"
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 z-10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+        aria-label={`Suivant: ${dishes[(currentIndex + 1) % dishes.length]?.name}`}
+        aria-controls="carousel-content"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
       </button>
 
       {/* Indicateurs */}
-      <div className="flex justify-center gap-2 mt-6">
+      <div className="flex justify-center gap-2 mt-6" role="tablist" aria-label="Indicateurs de navigation du carrousel">
         {dishes.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`h-2 rounded-full transition-all duration-300 ${
+            className={`h-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-black ${
               index === currentIndex
                 ? 'bg-red-600 w-8'
                 : 'bg-gray-600 w-2 hover:bg-gray-500'
             }`}
-            aria-label={`Aller au slide ${index + 1}`}
+            role="tab"
+            aria-selected={index === currentIndex}
+            aria-controls={`slide-${index}`}
+            aria-label={`Aller au slide ${index + 1}: ${dishes[index].name}`}
+            tabIndex={index === currentIndex ? 0 : -1}
           />
         ))}
       </div>
@@ -207,6 +224,7 @@ function DishCarousel() {
 function Home() {
   const location = useLocation()
   const { restaurants, selectRestaurant, selectedRestaurantId } = useRestaurant()
+  const { startTransition } = usePageTransition()
   const ramenSectionRef = useRef(null)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [modelKey, setModelKey] = useState(0)
@@ -262,10 +280,10 @@ function Home() {
   }, [])
 
   // Calculer les valeurs basées sur le scroll progress
-  // Rotation à 1/4 de la vitesse du scroll (parallax)
+  // Rotation à 1/4 de la vitesse du scroll (parallax) - sur l'axe Z
   const rotation = (scrollProgress * 360) / 4 // Rotation de 0° à 90° (360/4 = 90)
-  // Opacité de 100% à 0% selon le scroll
-  const opacity = 1 - scrollProgress // Opacité de 1 à 0
+  // Opacité fixe à 100% (pas d'effet d'opacité)
+  const opacity = 1
   // Translation vers le bas selon le scroll (2x plus rapide que le scroll)
   const translateY = scrollProgress * 8 // Translation de 0 à 10 unités vers le bas (2x plus rapide)
   // Scale de 1 à 4 selon le scroll
@@ -295,7 +313,7 @@ function Home() {
             <ambientLight intensity={1} />
             <directionalLight position={[10, 10, 5]} intensity={1.5} />
             <pointLight position={[-10, -10, -5]} intensity={0.8} />
-            <Model3D key={`${location.pathname}-${modelKey}`} rotation={rotation} opacity={opacity} translateY={translateY} scale={scale} />
+            <Model3D key={`${location.pathname}-${modelKey}`} rotation={rotation} translateY={translateY} scale={scale} />
             <OrbitControls enabled={false} />
           </Canvas>
         </div>
@@ -329,19 +347,20 @@ function Home() {
         {/* Gradient de fond */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-50" />
         
-        <div className="mx-auto px-4 md:px-6 max-w-6xl relative z-10 py-20 md:py-32">
-          <div className="text-center mb-20 md:mb-24">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
+        <div className="mx-auto px-4 md:px-6 lg:px-8 max-w-7xl relative z-10 py-20 md:py-32 lg:py-40">
+          <div className="text-center mb-20 md:mb-24 lg:mb-32">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 tracking-tight">
               Cuisine Japonaise
               <span className="block text-red-600 mt-2">authentique</span>
             </h1>
-            <p className="text-base md:text-lg text-gray-400 mb-16 max-w-2xl mx-auto">
+            <p className="text-base md:text-lg lg:text-xl text-gray-400 mb-12 md:mb-16 lg:mb-20 max-w-2xl lg:max-w-3xl mx-auto leading-relaxed">
               Bienvenue au Petit Naka, un restaurant de cuisine authentique japonaise avec plusieurs adresses à Paris. Nos plats sont préparés avec passion par des chefs japonais et sont disponibles sur place, à emporter ou en livraison. Venez découvrir et déguster une cuisine japonaise de qualité !
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/carte"
-                className="bg-transparent text-white font-semibold py-4 px-10 rounded-lg text-center border-2 border-white transition-all duration-300 hover:bg-white hover:text-gray-900 hover:scale-105"
+                onClick={startTransition}
+                className="bg-transparent text-white font-semibold py-4 px-10 lg:py-5 lg:px-12 rounded-lg text-center border-2 border-white transition-all duration-300 hover:bg-white hover:text-gray-900 hover:scale-105 text-lg lg:text-xl"
               >
                 Voir la carte
               </Link>
@@ -349,43 +368,43 @@ function Home() {
           </div>
 
           {/* Section Localisations */}
-          <div className="mt-24 md:mt-32 mb-24">
-            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+          <div className="mt-24 md:mt-32 lg:mt-40 mb-24 lg:mb-32">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-4 lg:mb-6">
               Nos Adresses
             </h2>
-            <p className="text-gray-400 text-center mb-4 max-w-2xl mx-auto">
+            <p className="text-gray-400 text-center mb-4 lg:mb-6 max-w-2xl lg:max-w-3xl mx-auto text-base lg:text-lg">
               Retrouvez-nous dans plusieurs quartiers de Paris
             </p>
             {selectedRestaurantId && (
-              <p className="text-gray-500 text-center mb-8 max-w-2xl mx-auto text-sm">
+              <p className="text-gray-500 text-center mb-8 lg:mb-12 max-w-2xl mx-auto text-sm lg:text-base">
                 Cliquez sur une adresse pour sélectionner un autre restaurant
               </p>
             )}
-            <div className="max-w-3xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="max-w-5xl lg:max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
                 {restaurants.map((restaurant) => {
                   const isSelected = selectedRestaurantId === restaurant.id
                   return (
                     <button
                       key={restaurant.id}
                       onClick={() => selectRestaurant(restaurant.id)}
-                      className={`flex items-center gap-4 p-4 border-b transition-all duration-300 text-left w-full ${
+                      className={`flex flex-col items-start gap-3 p-5 lg:p-6 border rounded-lg transition-all duration-300 text-left w-full ${
                         isSelected
-                          ? 'border-red-600 bg-red-600/10 hover:bg-red-600/20'
-                          : 'border-gray-800 hover:border-red-600/50'
+                          ? 'border-red-600 bg-red-600/10 hover:bg-red-600/20 shadow-lg shadow-red-600/20'
+                          : 'border-gray-800 hover:border-red-600/50 hover:bg-gray-900/50'
                       }`}
                     >
-                      <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                        isSelected ? 'bg-red-600 w-2 h-2' : 'bg-red-600'
+                      <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                        isSelected ? 'bg-red-600 w-3 h-3' : 'bg-red-600'
                       }`}></div>
-                      <div className="flex-1">
-                        <p className={`text-lg ${
+                      <div className="flex-1 w-full">
+                        <p className={`text-base lg:text-lg ${
                           isSelected ? 'text-white font-semibold' : 'text-gray-300'
                         }`}>
                           {restaurant.address}
                         </p>
                         {isSelected && (
-                          <p className="text-red-600 text-sm mt-1">✓ Restaurant sélectionné</p>
+                          <p className="text-red-600 text-sm lg:text-base mt-2 font-medium">✓ Restaurant sélectionné</p>
                         )}
                       </div>
                     </button>
@@ -396,11 +415,13 @@ function Home() {
           </div>
 
           {/* Carrousel de plats */}
-          <div className="mt-24 md:mt-32 mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">
+          <div className="mt-24 md:mt-32 lg:mt-40 mb-12 lg:mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-12 lg:mb-16">
               Nos Spécialités
             </h2>
-            <DishCarousel />
+            <div className="max-w-5xl lg:max-w-6xl mx-auto">
+              <DishCarousel />
+            </div>
           </div>
         </div>
       </section>
@@ -408,7 +429,8 @@ function Home() {
       {/* Bouton de réservation en bas à droite */}
       <Link
         to="/reservation"
-        className="fixed bottom-6 right-6 bg-red-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 hover:bg-red-700 hover:scale-105 hover:shadow-xl z-50"
+        onClick={startTransition}
+        className="fixed bottom-6 right-6 lg:bottom-8 lg:right-8 bg-red-600 text-white font-semibold py-3 px-6 lg:py-4 lg:px-8 rounded-lg transition-all duration-300 hover:bg-red-700 hover:scale-105 hover:shadow-xl z-50 text-base lg:text-lg"
       >
         Cliquer pour réserver
       </Link>
