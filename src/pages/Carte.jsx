@@ -4,6 +4,30 @@ import { useRestaurant } from '../contexts/RestaurantContext'
 import menuData from '../data/menu.json'
 import { validateMenuData } from '../utils/validation'
 
+// Fonction helper pour optimiser les URLs Unsplash (définie en dehors des composants)
+function optimizeImageUrl(url, width = 400) {
+  if (!url || typeof url !== 'string') return url
+  
+  // Si c'est une URL Unsplash, optimiser avec WebP et dimensions
+  if (url.includes('unsplash.com')) {
+    try {
+      const urlObj = new URL(url)
+      // Extraire l'ID de l'image (ex: photo-1626087925096-788c3e0c0a7e)
+      const pathParts = urlObj.pathname.split('/').filter(p => p)
+      const imageId = pathParts[pathParts.length - 1] || pathParts[0]
+      
+      // Construire une URL optimisée avec WebP
+      // Utiliser des dimensions responsives et format WebP pour meilleure compression
+      return `https://images.unsplash.com/${imageId}?w=${width}&q=80&fm=webp&auto=format&fit=crop`
+    } catch (e) {
+      // Si l'URL n'est pas valide, retourner l'originale
+      return url
+    }
+  }
+  
+  return url
+}
+
 // Composant pour la barre parallax sous les titres
 function ParallaxBar() {
   const barRef = useRef(null)
@@ -491,30 +515,6 @@ function Carte() {
       return {}
     }
   }, [selectedRestaurantId])
-
-  // Fonction helper pour optimiser les URLs Unsplash
-  const optimizeImageUrl = (url, width = 400) => {
-    if (!url || typeof url !== 'string') return url
-    
-    // Si c'est une URL Unsplash, optimiser avec WebP et dimensions
-    if (url.includes('unsplash.com')) {
-      try {
-        const urlObj = new URL(url)
-        // Extraire l'ID de l'image (ex: photo-1626087925096-788c3e0c0a7e)
-        const pathParts = urlObj.pathname.split('/').filter(p => p)
-        const imageId = pathParts[pathParts.length - 1] || pathParts[0]
-        
-        // Construire une URL optimisée avec WebP
-        // Utiliser des dimensions responsives et format WebP pour meilleure compression
-        return `https://images.unsplash.com/${imageId}?w=${width}&q=80&fm=webp&auto=format&fit=crop`
-      } catch (e) {
-        // Si l'URL n'est pas valide, retourner l'originale
-        return url
-      }
-    }
-    
-    return url
-  }
 
   // Récupérer l'image depuis le JSON ou utiliser un fallback
   const getItemImage = (item, categoryId) => {
