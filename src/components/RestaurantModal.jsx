@@ -12,6 +12,29 @@ function RestaurantModal() {
     console.log('RestaurantModal - localStorage:', localStorage.getItem('selectedRestaurantId'))
   }, [showModal, restaurants])
 
+  // Désactiver le scroll quand la modal est visible
+  useEffect(() => {
+    if (showModal) {
+      // Sauvegarder la position du scroll
+      const scrollY = window.scrollY
+      // Désactiver le scroll
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollY}px`
+      document.body.style.width = '100%'
+      document.body.style.overflow = 'hidden'
+      
+      return () => {
+        // Réactiver le scroll
+        document.body.style.position = ''
+        document.body.style.top = ''
+        document.body.style.width = ''
+        document.body.style.overflow = ''
+        // Restaurer la position du scroll
+        window.scrollTo(0, scrollY)
+      }
+    }
+  }, [showModal])
+
   // Animation avec délai
   useEffect(() => {
     if (!showModal) {
@@ -25,7 +48,7 @@ function RestaurantModal() {
     // Délai avant l'apparition
     const timer = setTimeout(() => {
       setIsVisible(true)
-    }, 1000) // Délai de 1 seconde
+    }, 1500) // Délai de 1.5 secondes
     
     return () => {
       clearTimeout(timer)

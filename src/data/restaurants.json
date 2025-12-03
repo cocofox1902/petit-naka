@@ -6,8 +6,17 @@
       "address": "7 Rue des Fêtes",
       "postalCode": "75019",
       "city": "Paris",
-      "phone": "+33 1 40 33 01 13",
-      "googleMapsUrl": "https://www.google.com/maps/place/Le+Petit+Naka/@48.8759032,2.3920399,3a,75y,323.66h,93.15t/data=!3m7!1e1!3m5!1sujFfvXI_hwz7Y1oFpV9afA!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-3.1519966629711433%26panoid%3DujFfvXI_hwz7Y1oFpV9afA%26yaw%3D323.66307357226685!7i16384!8i8192!4m6!3m5!1s0x47e66dbfe5785ffd:0x5d1703808757b75!8m2!3d48.875977!4d2.391978!16s%2Fg%2F1td4jfbt?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D"
+      "phone": "+33 1 42 40 66 63",
+      "googleMapsUrl": "https://www.google.com/maps/place/Le+Petit+Naka/@48.8759032,2.3920399,3a,75y,323.66h,93.15t/data=!3m7!1e1!3m5!1sujFfvXI_hwz7Y1oFpV9afA!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-3.1519966629711433%26panoid%3DujFfvXI_hwz7Y1oFpV9afA%26yaw%3D323.66307357226685!7i16384!8i8192!4m6!3m5!1s0x47e66dbfe5785ffd:0x5d1703808757b75!8m2!3d48.875977!4d2.391978!16s%2Fg%2F1td4jfbt?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "openingHours": {
+        "lundi": ["11:30–22:00"],
+        "mardi": ["11:30–22:00"],
+        "mercredi": ["11:30–22:00"],
+        "jeudi": ["11:30–22:00"],
+        "vendredi": ["11:30–22:00"],
+        "samedi": ["11:30–22:00"],
+        "dimanche": ["11:30–15:00", "18:00–22:00"]
+      }
     },
     {
       "id": "lassus",
@@ -15,8 +24,17 @@
       "address": "9 Rue Lassus",
       "postalCode": "75019",
       "city": "Paris",
-      "phone": "+33 1 40 33 01 14",
-      "googleMapsUrl": "https://www.google.com/maps/place/Petit+Naka+Jourdain/@48.8754907,2.388773,20.71z/data=!3m1!5s0x47e66dc027d11e3d:0xa68bcd46731e3949!4m15!1m8!3m7!1s0x47e66dc027e039e9:0x50204fcad7018dfa!2s9+Rue+Lassus,+75019+Paris!3b1!8m2!3d48.8755249!4d2.3889684!16s%2Fg%2F11b8v65ylm!3m5!1s0x47e66dc0264933f7:0x790cc7b6ae9158f0!8m2!3d48.8755219!4d2.3889551!16s%2Fg%2F1tdg2jfk?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D"
+      "phone": "+33 1 42 08 43 22",
+      "googleMapsUrl": "https://www.google.com/maps/place/Petit+Naka+Jourdain/@48.8754907,2.388773,20.71z/data=!3m1!5s0x47e66dc027d11e3d:0xa68bcd46731e3949!4m15!1m8!3m7!1s0x47e66dc027e039e9:0x50204fcad7018dfa!2s9+Rue+Lassus,+75019+Paris!3b1!8m2!3d48.8755249!4d2.3889684!16s%2Fg%2F11b8v65ylm!3m5!1s0x47e66dc0264933f7:0x790cc7b6ae9158f0!8m2!3d48.8755219!4d2.3889551!16s%2Fg%2F1tdg2jfk?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "openingHours": {
+        "lundi": ["12:00–14:30", "19:00–22:15"],
+        "mardi": ["12:00–14:30", "19:00–22:15"],
+        "mercredi": ["12:00–14:30", "19:00–22:15"],
+        "jeudi": ["12:00–14:30", "19:00–22:15"],
+        "vendredi": ["12:00–14:30", "19:00–22:15"],
+        "samedi": ["12:00–15:00", "19:00–22:30"],
+        "dimanche": ["Fermé"]
+      }
     },
     {
       "id": "gatines",
@@ -24,8 +42,17 @@
       "address": "17 Rue des Gâtines",
       "postalCode": "75020",
       "city": "Paris",
-      "phone": "+33 1 40 33 01 15",
-      "googleMapsUrl": "https://www.google.com/maps/place/Petit+Naka/@48.8657305,2.3982989,3a,75y,262.56h,95.19t/data=!3m7!1e1!3m5!1sV3S80HP7xruMIf6EGfiBoQ!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-5.194781207009314%26panoid%3DV3S80HP7xruMIf6EGfiBoQ%26yaw%3D262.56411985093837!7i16384!8i8192!4m6!3m5!1s0x47e66d21dc4c33bd:0x860a8faa1939499f!8m2!3d48.8657605!4d2.3981937!16s%2Fg%2F11hz8llh42?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D"
+      "phone": "+33 1 43 66 29 29",
+      "googleMapsUrl": "https://www.google.com/maps/place/Petit+Naka/@48.8657305,2.3982989,3a,75y,262.56h,95.19t/data=!3m7!1e1!3m5!1sV3S80HP7xruMIf6EGfiBoQ!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-5.194781207009314%26panoid%3DV3S80HP7xruMIf6EGfiBoQ%26yaw%3D262.56411985093837!7i16384!8i8192!4m6!3m5!1s0x47e66d21dc4c33bd:0x860a8faa1939499f!8m2!3d48.8657605!4d2.3981937!16s%2Fg%2F11hz8llh42?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "openingHours": {
+        "lundi": ["11:30–15:00", "17:30–22:00"],
+        "mardi": ["11:30–15:00", "17:30–22:00"],
+        "mercredi": ["11:30–15:00", "17:30–22:00"],
+        "jeudi": ["11:30–15:00", "17:30–22:00"],
+        "vendredi": ["11:00–22:00"],
+        "samedi": ["11:00–22:00"],
+        "dimanche": ["11:00–15:00", "18:00–22:00"]
+      }
     },
     {
       "id": "merlin",
@@ -33,8 +60,17 @@
       "address": "4 Rue Merlin",
       "postalCode": "75011",
       "city": "Paris",
-      "phone": "+33 1 40 33 01 16",
-      "googleMapsUrl": "https://www.google.com/maps/place/Petit+Naka+11e/@48.8595568,2.3858921,20.21z/data=!4m15!1m8!3m7!1s0x47e66df46f712ca3:0x6788b7b20a2bb158!2s4+Rue+Merlin,+75011+Paris!3b1!8m2!3d48.8596009!4d2.3861582!16s%2Fg%2F11cncm_d7l!3m5!1s0x47e66d707c95ab7d:0xac6fc372675ad302!8m2!3d48.8596008!4d2.3861384!16s%2Fg%2F11g4c5v2_y?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D"
+      "phone": "+33 1 40 33 01 13",
+      "googleMapsUrl": "https://www.google.com/maps/place/Petit+Naka+11e/@48.8595568,2.3858921,20.21z/data=!4m15!1m8!3m7!1s0x47e66df46f712ca3:0x6788b7b20a2bb158!2s4+Rue+Merlin,+75011+Paris!3b1!8m2!3d48.8596009!4d2.3861582!16s%2Fg%2F11cncm_d7l!3m5!1s0x47e66d707c95ab7d:0xac6fc372675ad302!8m2!3d48.8596008!4d2.3861384!16s%2Fg%2F11g4c5v2_y?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "openingHours": {
+        "lundi": ["11:30–15:00"],
+        "mardi": ["11:30–15:00"],
+        "mercredi": ["11:30–15:00"],
+        "jeudi": ["11:30–15:00"],
+        "vendredi": ["11:30–15:00"],
+        "samedi": ["Fermé"],
+        "dimanche": ["Fermé"]
+      }
     }
   ]
 }

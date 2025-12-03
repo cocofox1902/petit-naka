@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useRestaurant } from '../contexts/RestaurantContext'
 import menuData from '../data/menu.json'
 
@@ -423,8 +424,24 @@ function WheelCarousel({ items, getItemImage, categoryId = 'entrees' }) {
 }
 
 function Carte() {
-  const { selectedRestaurantId, selectedRestaurant } = useRestaurant()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { selectedRestaurantId, selectedRestaurant, selectRestaurant, restaurants } = useRestaurant()
   const [activeCategory, setActiveCategory] = useState('entrees')
+
+  // Gérer le paramètre d'URL pour sélectionner automatiquement un restaurant
+  useEffect(() => {
+    const restaurantName = searchParams.get('name')
+    if (restaurantName) {
+      // Vérifier si le nom correspond à un restaurant valide
+      const restaurant = restaurants.find(r => r.id === restaurantName)
+      if (restaurant) {
+        // Sélectionner le restaurant (cela l'enregistrera automatiquement dans localStorage)
+        selectRestaurant(restaurantName)
+        // Nettoyer l'URL en enlevant le paramètre
+        setSearchParams({})
+      }
+    }
+  }, [searchParams, restaurants, selectRestaurant, setSearchParams])
 
   // Récupérer le menu du restaurant sélectionné
   const currentMenuData = useMemo(() => {
@@ -452,6 +469,9 @@ function Carte() {
       'chirashi': { type: 'emoji', value: '🍱' },
       'maki': { type: 'emoji', value: '🍣' },
       'desserts': { type: 'emoji', value: '🍡' },
+      'ramen': { type: 'emoji', value: '🍜' },
+      'udon': { type: 'emoji', value: '🍜' },
+      'soba': { type: 'emoji', value: '🍜' },
     }
 
     return categoryFallbacks[categoryId] || { type: 'emoji', value: '🍽️' }
@@ -467,7 +487,10 @@ function Carte() {
       'sashimi': 'Sashimi',
       'chirashi': 'Chirashi',
       'maki': 'Maki / California',
-      'desserts': 'Desserts'
+      'desserts': 'Desserts',
+      'ramen': 'Ramen',
+      'udon': 'Udon',
+      'soba': 'Soba'
     }
 
     return Object.keys(currentMenuData).map(categoryId => ({
@@ -538,16 +561,16 @@ function Carte() {
         {/* Sélecteur de catégorie */}
         <div className="bg-black/80 h-[7%] backdrop-blur-sm py-4 -mx-4 md:-mx-6 px-4 md:px-6 shrink-0">
           <div className="overflow-x-auto scrollbar-hide">
-            <div className="flex space-x-2 min-w-max md:min-w-0 md:justify-center">
+            <div className="flex space-x-2 min-w-max md:min-w-0 md:justify-center px-2">
               {categories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => {
                     setActiveCategory(category.id)
                   }}
-                  className={`px-4 py-2 text-sm whitespace-nowrap transition-all duration-300 rounded-lg ${
+                  className={`px-4 py-2 text-sm whitespace-nowrap transition-background duration-600 rounded-lg ${
                     activeCategory === category.id
-                      ? 'text-white bg-red-600 font-semibold shadow-lg'
+                      ? 'text-white bg-red-600'
                       : 'text-white bg-black hover:bg-gray-900'
                   }`}
                 >
