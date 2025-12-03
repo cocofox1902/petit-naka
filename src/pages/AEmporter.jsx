@@ -23,7 +23,7 @@ function AEmporter() {
     <section className="py-16 md:py-24 lg:py-32 bg-black min-h-screen">
       <div className="mx-auto px-4 md:px-6 lg:px-8 max-w-7xl">
         <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 lg:mb-6">À emporter</h2>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 lg:mb-6">À emporter</h1>
           <p className="text-gray-300 text-lg lg:text-xl">Passez votre commande par téléphone</p>
         </div>
 

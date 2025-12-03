@@ -5,7 +5,7 @@ function Histoire() {
     <section className="py-16 md:py-24 lg:py-32 bg-black min-h-screen" aria-labelledby="histoire-heading">
       <div className="mx-auto px-4 md:px-6 lg:px-8 max-w-7xl">
         <div className="text-center mb-12 lg:mb-16">
-          <h2 id="histoire-heading" className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 lg:mb-6">Notre Histoire</h2>
+          <h1 id="histoire-heading" className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 lg:mb-6">Notre Histoire</h1>
           <div className="w-24 h-1 bg-red-600 mx-auto" aria-hidden="true"></div>
         </div>
         

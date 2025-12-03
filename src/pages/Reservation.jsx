@@ -36,7 +36,7 @@ function Reservation() {
     <section className="py-16 md:py-24 lg:py-32 bg-black min-h-screen" aria-labelledby="reservation-heading">
       <div className="mx-auto px-4 md:px-6 lg:px-8 max-w-4xl lg:max-w-5xl">
         <div className="text-center mb-8 lg:mb-12">
-          <h2 id="reservation-heading" className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 lg:mb-6">Réservation</h2>
+          <h1 id="reservation-heading" className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 lg:mb-6">Réservation</h1>
           <p className="text-gray-300 text-lg lg:text-xl">
             Réservez une table en ligne ou par téléphone au{' '}
             <a 

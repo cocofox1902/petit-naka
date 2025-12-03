@@ -13,8 +13,8 @@ function Contact() {
     <section className="py-16 md:py-24 lg:py-32 bg-black min-h-screen">
       <div className="mx-auto px-4 md:px-6 lg:px-8 max-w-7xl">
         <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 lg:mb-6">Infos & contact</h2>
-          <div className="w-24 h-1 bg-red-600 mx-auto"></div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 lg:mb-6">Infos & contact</h1>
+          <div className="w-24 h-1 bg-red-600 mx-auto" aria-hidden="true"></div>
         </div>
 
         {/* Image de localisation - LCP image, chargée immédiatement */}

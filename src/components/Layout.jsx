@@ -281,6 +281,15 @@ function Layout({ children }) {
               Petit Naka - Cuisine Japonaise authentique
             </p>
             <p className="text-xs mb-4 text-gray-300">© Petit Naka 2025</p>
+            {/* Liens internes pour améliorer le SEO */}
+            <nav className="mb-4 flex flex-wrap justify-center gap-4 text-sm" aria-label="Liens de navigation du footer">
+              <Link to="/" className="text-gray-400 hover:text-white transition-colors">Accueil</Link>
+              <Link to="/carte" className="text-gray-400 hover:text-white transition-colors">Carte</Link>
+              <Link to="/a-emporter" className="text-gray-400 hover:text-white transition-colors">À emporter</Link>
+              <Link to="/reservation" className="text-gray-400 hover:text-white transition-colors">Réservation</Link>
+              <Link to="/histoire" className="text-gray-400 hover:text-white transition-colors">Notre Histoire</Link>
+              <Link to="/contact" className="text-gray-400 hover:text-white transition-colors">Contact</Link>
+            </nav>
             <p className="text-xs text-gray-300 max-w-2xl mx-auto">
               En utilisant ce site, vous acceptez notre utilisation des cookies. Nous utilisons des cookies pour vous fournir une expérience améliorée et pour optimiser le bon fonctionnement de notre site web.
             </p>

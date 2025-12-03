@@ -1,2 +1,10 @@
+# Redirection SPA
 /*    /index.html   200
+
+# Redirection WWW vers non-WWW (recommandé pour éviter le contenu dupliqué)
+# Note: Ces redirections fonctionneront une fois le domaine personnalisé configuré sur Netlify
+# Pour l'instant, Netlify gère automatiquement les redirections www
+# Si vous avez un domaine personnalisé, décommentez les lignes suivantes :
+# https://www.votre-domaine.com/* https://votre-domaine.com/:splat 301!
+# http://www.votre-domaine.com/* https://votre-domaine.com/:splat 301!
 

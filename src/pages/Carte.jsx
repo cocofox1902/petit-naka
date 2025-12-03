@@ -649,6 +649,13 @@ function Carte() {
   return (
     <section className="flex flex-col overflow-x-hidden md:overflow-y-auto overflow-y-hidden">
       <div className="mx-auto max-w-7xl w-full flex flex-col h-[90%] md:h-auto lg:h-auto">
+        {/* Titre principal - H1 pour SEO */}
+        <div className="text-center py-4 md:py-6 lg:py-8">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white px-4">
+            {selectedRestaurant ? `Carte - ${selectedRestaurant.name}` : 'Carte du Menu'}
+          </h1>
+        </div>
+        
         {/* Sélecteur de catégorie - LCP element, s'affiche immédiatement */}
         <div className="bg-black/80 h-[7%] lg:h-auto backdrop-blur-sm py-4 lg:py-6 -mx-4 md:-mx-6 lg:mx-0 px-4 md:px-6 lg:px-8 shrink-0">
           <div className="overflow-x-auto scrollbar-hide lg:overflow-visible">

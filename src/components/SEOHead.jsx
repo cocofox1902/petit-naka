@@ -45,30 +45,30 @@ function SEOHead() {
 
       switch (location.pathname) {
         case '/':
-          pageTitle = baseTitle
+          pageTitle = `${baseTitle} - Accueil`
           break
         case '/carte':
           pageTitle = selectedRestaurant 
-            ? `Carte - ${selectedRestaurant.name} | ${baseTitle}`
-            : `Carte | ${baseTitle}`
+            ? `Carte du Menu - ${selectedRestaurant.name} | ${baseTitle}`
+            : `Carte du Menu | ${baseTitle}`
           break
         case '/a-emporter':
           pageTitle = selectedRestaurant
             ? `À emporter - ${selectedRestaurant.name} | ${baseTitle}`
-            : `À emporter | ${baseTitle}`
+            : `À emporter - Commandes à emporter | ${baseTitle}`
           break
         case '/reservation':
           pageTitle = selectedRestaurant
             ? `Réservation - ${selectedRestaurant.name} | ${baseTitle}`
-            : `Réservation | ${baseTitle}`
+            : `Réservation en ligne | ${baseTitle}`
           break
         case '/contact':
           pageTitle = selectedRestaurant
             ? `Contact - ${selectedRestaurant.name} | ${baseTitle}`
-            : `Contact | ${baseTitle}`
+            : `Contact - Informations et horaires | ${baseTitle}`
           break
         case '/histoire':
-          pageTitle = `Notre Histoire | ${baseTitle}`
+          pageTitle = `Notre Histoire - Restaurant japonais à Paris | ${baseTitle}`
           break
         default:
           pageTitle = baseTitle
